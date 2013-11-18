@@ -106,14 +106,14 @@ static void creation_fichier_geno_haplo(TypeGeno* adrGeno, TypeHaplo haplo1, Typ
 /* Genere un fichier compose des genotypes */
 static void creation_fichier_geno(TypeGeno* adrGeno)
 {
-	FILE* fichier=NULL;
-	fichier = fopen(GENOTYPES ,"a");
+	FILE* fichier1=NULL;
+	fichier1 = fopen(GENOTYPES ,"a");
 
-	if (fichier != NULL)
+	if (fichier1 != NULL)
 	{
-        ecrire_genotypes(*adrGeno,fichier);
+        ecrire_genotypes(*adrGeno,fichier1);
 	}
-	fclose(fichier);
+	fclose(fichier1);
 }
 
 /* fonctions publiques ======================================================================= */
@@ -261,6 +261,6 @@ void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[])
 	creation_genotypes(adrGeno);
 	creation_fichier_geno_haplo(adrGeno, adrGeno->haplo1, adrGeno->haplo2);
 	creation_fichier_geno(adrGeno);
-    
+    printf("TESTTTTT : %s\n",GENO_HAPLO);
     free(adrGeno->genotype);
 }

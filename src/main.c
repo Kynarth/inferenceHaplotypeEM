@@ -12,6 +12,9 @@
 #include <ctype.h>
 #include "../inc/fonctions.h"
 
+#define GENO_HAPLO "./fichiers/geno_et_haplo.txt"
+#define GENOTYPES "./fichiers/genotypes.txt"
+
 /* point d'entree ============================================================================ */
 
 int main(int argc,char* argv[])
@@ -26,7 +29,7 @@ int main(int argc,char* argv[])
     FILE* fichier = NULL;
     
     /* ========== Code ========== */
-    
+
 	if (argc != 4)
     {
 	    printf("Le nombre d'argument est incorrect !\n");
@@ -44,6 +47,7 @@ int main(int argc,char* argv[])
 	}
     
     srand (time(NULL));
+    printf("test1");
 	
     /* Suppression des fichiers de genotypes si presents */
 	test_existence(GENO_HAPLO);
@@ -107,7 +111,7 @@ int main(int argc,char* argv[])
     }
     else
     {
-        fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s", PARAM);
+        fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s\n", PARAM);
         exit(1);
     }
     fclose(fichier);
