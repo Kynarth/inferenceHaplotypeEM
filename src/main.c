@@ -22,9 +22,10 @@ int main(int argc,char* argv[])
     
 	/* ====== Declarations ====== */
     
-	int i, j; /* compteurs */
-	TypeBool doublon;
+	int i; /* compteurs */
+    int nbNonRedondant;
 	TypeHaplo* haplo = NULL;
+    TypeHaplo* haploNonRedondant = NULL;
 	TypeGeno* geno = NULL;
     FILE* fichier = NULL;
     
@@ -70,6 +71,7 @@ int main(int argc,char* argv[])
 	for (i=0 ; i < NB_HAPLO ; i++)
     {
 		haplo[i].id=i;
+        haplo[i].doublon=0;
         initialiser_haplotypes(&haplo[i]);
 	}
 
@@ -78,23 +80,15 @@ int main(int argc,char* argv[])
      * si un doublon est present, le premier croise obtient un VRAI
      * dans l'element doublon.
 	 */
-	for (i=0 ; i < NB_HAPLO ; i++)
-    {
-		j = i+1;
-		doublon = 0;
-		while ((doublon == 0) && (j < NB_HAPLO))
-        {
-			doublon = verification_presence_doublon(haplo[i],haplo[j]);
-			j++;
-		}
-		haplo[i].doublon=doublon;
-		/*(test)afficher_haplotypes(haplo[i],TAILLE_GENO);*/
-	}
-
+	recherche_haplotyple_doublon(haplo);
+    nbNonRedondant = compte_nombre_doublon(haplo);
+    haploNonRedondant = lister_haplo_non_redondant(nbNonRedondant, haplo);
+    free(haplo);
+    
 	for (i = 0 ; i < NB_INDIV ; i++)
     {
 		geno[i].id=i;
-		initialiser_genotypes(&geno[i],haplo);
+		initialiser_genotypes(&geno[i],haploNonRedondant,nbNonRedondant);
 	}
     
     /* (test)Affichage des résultats */
@@ -102,6 +96,7 @@ int main(int argc,char* argv[])
 	printf("nb d'haplotypes générés : %d \n",NB_HAPLO);
 	printf("taille du genome : %d \n",TAILLE_GENO);
 	printf("nb de loci differents tolere : %d \n",NB_LOCI);
+    printf("nb haplo non redondant : %d \n",nbNonRedondant);
     
     /* Stockage des parametres dans un fichier */
     fichier = fopen(PARAM, "w");
@@ -116,7 +111,7 @@ int main(int argc,char* argv[])
     }
     fclose(fichier);
     
-    free(haplo);
+    free(haploNonRedondant);
     free(geno);
 	
     return 0;

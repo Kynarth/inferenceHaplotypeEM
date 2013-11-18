@@ -22,9 +22,9 @@ static int random_binaire()
 }
 
 /* Fonction de tirage au sort d'haplotype */
-static int tirage_au_sort(int NB_HAPLO)
+static int tirage_au_sort(int nb)
 {
-	const int MIN = 0, MAX = (NB_HAPLO-1);
+	const int MIN = 0, MAX = (nb-1);
 	int resultat;
 	resultat = (rand() % (MAX + 1 - MIN)) + MIN; 
 	return resultat;
@@ -242,16 +242,16 @@ TypeBool verification_nombre_loci(TypeHaplo haplo1,
  * initialise ensuite haplo1 et 2 du genotype
  * et enfin initialise le genotype a partir des 2 haplotypes.
  */
-void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[])
+void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[], int nbHaploNonRedondant)
 {
 	int h1, h2; /* nb tire aleatoirement parmi 0 et nb_haplo-1 */
 	TypeBool nbLociDiffCorrect;
-	h1 = tirage_au_sort(NB_HAPLO);
-	h2 = tirage_au_sort(NB_HAPLO);
+	h1 = tirage_au_sort(nbHaploNonRedondant);
+	h2 = tirage_au_sort(nbHaploNonRedondant);
 	nbLociDiffCorrect = verification_nombre_loci(haplo[h1],haplo[h2]);
 	while (nbLociDiffCorrect == FAUX)
 	{
-		h2 = tirage_au_sort(NB_HAPLO);
+		h2 = tirage_au_sort(nbHaploNonRedondant);
 		nbLociDiffCorrect = verification_nombre_loci(haplo[h1],haplo[h2]);
 	}
 	adrGeno->haplo1.haplotype = alloue_memoire();
@@ -261,6 +261,58 @@ void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[])
 	creation_genotypes(adrGeno);
 	creation_fichier_geno_haplo(adrGeno, adrGeno->haplo1, adrGeno->haplo2);
 	creation_fichier_geno(adrGeno);
-    printf("TESTTTTT : %s\n",GENO_HAPLO);
     free(adrGeno->genotype);
+}
+
+void recherche_haplotyple_doublon(TypeHaplo haplo[])
+{
+	int i;
+	int j;
+	TypeBool doublon;
+	for (i=0 ; i < NB_HAPLO ; i++)
+	{
+		for (j=i+1 ; j < NB_HAPLO ; j++)
+   	 	{
+			doublon = 0;
+            doublon = verification_presence_doublon(haplo[i],haplo[j]);
+			if (doublon==VRAI)
+            {
+                haplo[j].id = haplo[i].id;
+				haplo[j].doublon = VRAI;
+			}
+    	}
+	}
+}
+
+int compte_nombre_doublon(TypeHaplo haplo[])
+{
+	int i;
+	int compteur = 0;
+	for(i=0 ; i<NB_HAPLO ; i++)
+	{
+		printf("+1 : %d\n",haplo[i].doublon);
+		if(haplo[i].doublon == 0)
+		{
+
+			compteur ++;
+		}
+	}
+	return compteur;
+}
+
+TypeHaplo* lister_haplo_non_redondant(int compteur, TypeHaplo haplo[])
+{
+	int i;
+	int compte = 0;
+	TypeHaplo* haploNonRedondant = NULL;
+	haploNonRedondant = malloc(compteur * sizeof(TypeHaplo));
+	for(i=0 ; i<NB_HAPLO ; i++)
+	{
+		if(haplo[i].doublon == FAUX)
+		{
+			haploNonRedondant[compte] = haplo[i];
+			compte ++;
+		}
+	}
+	return haploNonRedondant;
 }

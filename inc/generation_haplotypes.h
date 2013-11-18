@@ -15,7 +15,7 @@ int tailleGeno;
 
 /* constantes ================================================================================ */
 
-#define PARAM "../fichiers/parametres.txt"
+#define PARAM "./fichiers/parametres.txt"
 #define TAILLE_GENO tailleGeno /* longueur du fragment d'ADN observe */
 #define NB_INDIV nbIndiv /* nombre d'individus sur lesquels les genotypes seront observe */
 

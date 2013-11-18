@@ -57,8 +57,12 @@ int* alloue_memoire();
 void initialiser_haplotypes(TypeHaplo* haplo);
 /*void afficher_haplotypes(TypeHaplo haplo);*/
 void afficher_genotypes(TypeGeno geno);
+void afficher_haplotypes(TypeHaplo haplo);
 TypeBool verification_presence_doublon(TypeHaplo haplo1, TypeHaplo haplo2);
 TypeBool verification_nombre_loci(TypeHaplo haplo1, TypeHaplo haplo2);
-void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[]);
+void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[], int nbHaploNonRedondant);
+void recherche_haplotyple_doublon(TypeHaplo haplo[]);
+int compte_nombre_doublon(TypeHaplo haplo[]);
+TypeHaplo* lister_haplo_non_redondant(int compteur, TypeHaplo haplo[]);
 
 #endif /* H_FONCTIONS */
