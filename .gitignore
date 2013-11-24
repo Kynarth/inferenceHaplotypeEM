@@ -1,0 +1,5 @@
+# Ignorer les répertoires d'exécutables d'objets
+obj/
+exe/
+.project
+.cproject
