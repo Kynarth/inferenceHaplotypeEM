@@ -1,4 +1,4 @@
-/* main.c */
+/* inference_main.c */
 
 /*
  * Auteurs: Julie Pelletier
@@ -11,9 +11,6 @@
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
  #include "../inc/liste_chainee_haplotypes.h" 
-
-/* constantes ================================================================================ */
-
 
 /* point d'entree ============================================================================ */
 
@@ -105,7 +102,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr, "Une erreur s'est produite durant l'ouverture du fichier des génotypes \n");
+        fprintf(stderr, 
+                "Une erreur s'est produite durant l'ouverture du fichier des génotypes.\n");
         exit(1);
     }
 
@@ -113,17 +111,18 @@ int main(int argc, char* argv[])
     /* Generation des haplotypes possibles */
     for(i=0 ; i<NB_INDIV ; i++)
     {
-        /*Recuperation de l'id pour pouvoir identifier tous les haplotypes avec un id different*/
+        /* Recuperation de l'id afin d'identifier tous les haplotypes avec un id different */
         id = initialisation_geno(&geno[i],id); 
     }
 
-    /*Indique pour chaque genotype et haplotype si c'est un dounlon ou non*/
+    /* Indique pour chaque genotype et haplotype si c'est un doublon ou non */
     for (i=0 ; i < NB_INDIV ; i++)
     {
         j = i+1;
         while (j < NB_INDIV)
         {
-            /*Verification des genotypes identique et remplacement de l'id s'il y a similarite*/ 
+            /* Verification des genotypes identiques et remplacement de l'id 
+             * en cas de similarite */ 
             recherche_genotype_doublon(&geno[i],&geno[j]);
             if(geno[i].id!=geno[j].id)
             {

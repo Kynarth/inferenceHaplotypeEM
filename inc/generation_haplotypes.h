@@ -1,7 +1,7 @@
 #ifndef H_GENERATION_HAPLOTYPES
 #define H_GENERATION_HAPLOTYPES
 
-/* fonctions.h */
+/* generation_haplotypes.h */
 
 /*
  * Auteurs: Julie Pelletier
@@ -17,7 +17,7 @@ int tailleGeno;
 
 #define PARAM "./fichiers/parametres.txt"
 #define TAILLE_GENO tailleGeno /* longueur du fragment d'ADN observe */
-#define NB_INDIV nbIndiv /* nombre d'individus sur lesquels les genotypes seront observe */
+#define NB_INDIV nbIndiv       /* nombre d'individus sur lesquels les genotypes seront observe */
 
 /* structures ================================================================================ */
 typedef struct TypeHaploBase

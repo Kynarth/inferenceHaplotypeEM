@@ -1,4 +1,4 @@
-/* inference_haplotype_EM */
+/* generation_haplotypes.c */
 
 /*
  * Auteurs: Julie Pelletier
@@ -28,14 +28,14 @@ static int compte_nombre_loci_ambigu(TypeGenoBase geno)
     return count;
 }
 
-/* Rempli la matrice d'haplotype en colonne */
+/* Rempli la matrice d'haplotypes en colonne */
 static void generation_haplo_possibles(TypeHaploBase* matrice, int lociMax, 
                                         int countLoci, int colonne, int n)
 {
     int i;
     int modulo;
     int interval;
-   if (n == 2)
+    if (n == 2)
     {
         for( i=0 ; i < lociMax ; i++){
             matrice[i].haplotype[colonne] = 1;
@@ -101,7 +101,7 @@ int* alloue_memoire()
     pointeur = malloc(TAILLE_GENO * sizeof(int));
     if (pointeur == NULL)
     {
-        fprintf(stderr,"Erreur d'allocation mémoire");
+        fprintf(stderr,"Erreur d'allocation mémoire.\n");
         exit(1);
     }
     return pointeur;
@@ -128,18 +128,18 @@ int lire(char* chaine, int longueur, FILE* fichier)
 }
 
 
-/* Initialisation des differents genotupes */
+/* Initialisation des differents genotypes */
 int initialisation_geno(TypeGenoBase* geno, int id)
 {   
-    int i, countLoci;           /*Compteur*/
+    int i, countLoci;           /* Compteur */
     
-    /*Initialisation des parametres du genotype*/
+    /* Initialisation des parametres du genotype */
     geno->nbLociAmbigu = compte_nombre_loci_ambigu(*geno);
     geno->nbHaplo = pow(2,geno->nbLociAmbigu);
     geno->nbIdentique = 1;
     countLoci = 0;
 
-    /*Initialisation de la matriceHaplo*/
+    /* Initialisation de la matriceHaplo */
     geno->matriceHaplo = malloc(sizeof(TypeHaploBase) * (geno->nbHaplo));
     for(i=0 ; i < geno->nbHaplo ; i++){
         geno->matriceHaplo[i].haplotype = alloue_memoire();
@@ -148,17 +148,17 @@ int initialisation_geno(TypeGenoBase* geno, int id)
         id ++;
     }   
 
-    /*Generation de tous les haplotypes differents possibles*/
+    /* Generation de tous les haplotypes differents possibles */
     for(i = 0 ; i < TAILLE_GENO ; i++ )
     {
-        /*Permet de savoir a quelle position ambigu on se trouve*/
+        /* Permet de savoir a quelle position ambigu on se trouve */
         if(geno->genotype[i] == 1){
             countLoci ++;
         }
         generation_haplo_possibles(geno->matriceHaplo,geno->nbHaplo,countLoci,i,geno->genotype[i]);
     }
 
-    /*Affichages*/
+    /* Affichages */
     printf("*********************\n");
     affichage_genotype(*geno);
     printf("---------------------\n");
@@ -189,14 +189,14 @@ int initialisation_geno(TypeGenoBase* geno, int id)
 void recherche_genotype_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 {
     int verif = 0;
-    /*Regarde parmi tous les haplotypes generes dans un second geno2*/
+    /* Regarde parmi tous les haplotypes generes dans un second geno2 */
     verif=0;
     verif=verif_doublon(geno1->genotype,geno2->genotype);
     if (verif==1)
     {
         geno2->id = geno1->id;
         printf("Genotype %d est redonant !\n",geno1->id);
-        /*Permet de savoir combien de genotypes seront identique pour le geno1 (de reference)*/
+        /* Permet de savoir combien de genotypes seront identique pour le geno1 (de reference) */
         geno1->nbIdentique=geno1->nbIdentique+1;
     }
 }
@@ -204,16 +204,16 @@ void recherche_genotype_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 /* C'EST ICI QU'IL FAUDRAIT FAIRE LE REMPLISSAGE DES LISTES CHAINEES DE GENOTYPES */
 void recherche_haplotyple_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 {
-    /* i correspond au genotype h1*/
-    /* j correspond au genotype h2*/
+    /* i correspond au genotype h1 */
+    /* j correspond au genotype h2* /
     int i, j; 
     int verif = 0;
     for(i=0 ; i<geno1->nbHaplo ; i++)
     {
-        /*Regarde parmi tous les haplotypes generes dans un premier geno1*/
+        /* Regarde parmi tous les haplotypes generes dans un premier geno1 */
         for(j=0 ; j<geno2->nbHaplo ; j++)
         {
-            /*Regarde parmi tous les haplotypes generes dans un second geno2*/
+            /* Regarde parmi tous les haplotypes generes dans un second geno2 */
             verif=0;
             verif=verif_doublon(geno1->matriceHaplo[i].haplotype,geno2->matriceHaplo[j].haplotype);
             if (verif==1)
