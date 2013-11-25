@@ -11,7 +11,7 @@
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
 
-/* fonctions privee ========================================================================== */
+/* fonctions privees ========================================================================= */
 
 /* Compte le nombre de loci ambigu pour un genotype donnee */
 static int compte_nombre_loci_ambigu(TypeGenoBase geno)
@@ -47,7 +47,7 @@ static void generation_haplo_possibles(TypeHaploBase* matrice, int lociMax,
             matrice[i].haplotype[colonne] = 0;
         }
     }
-    else /*Lorsque le locus est ambigu*/
+    else /* Lorsque le locus est ambigu */
     {
         modulo = pow(2,countLoci);
         interval = lociMax / modulo;
@@ -74,7 +74,7 @@ static void affichage_haplotypes(TypeGenoBase geno)
     }
 }
 
-/*Verifie chiffre par chiffre si les 2 haplotypes sont egaux*/
+/* Verifie chiffre par chiffre si les 2 haplotypes sont egaux */
 static int verif_doublon(int* seq1, int* seq2)
 {
     int verifPresenceDoublon = 1;
@@ -126,7 +126,6 @@ int lire(char* chaine, int longueur, FILE* fichier)
         return 1;
     }
 }
-
 
 /* Initialisation des differents genotypes */
 int initialisation_geno(TypeGenoBase* geno, int id)
