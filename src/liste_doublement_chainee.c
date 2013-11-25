@@ -310,29 +310,19 @@ Case* recherche_id(Liste* liste, int id)
     return ptr;
 }
 
-/* Fonction de recherche en fonction de la position */
-Case* recherche_pos(Liste* liste, int position)
+/* Fonction modifiant les informations d'un element de la liste */
+void modif_liste(Liste* liste, int id, int new_id)
 {
-    int i = 1;                   /* Compteur */
-    Case* ptr = liste->premiere; /* Pointeur de parcours de liste */
-    
-    if (liste != NULL)
+    Case* ptr = recherche_id(liste, id);
+    if (ptr == NULL)
     {
-        while ((ptr != NULL) && (i <= position))
-        {
-            if (position == i)
-            {
-                return ptr;
-            }
-            else
-            {
-                ptr = ptr->next;
-            }
-            i++;
-        }
+        fprintf(stderr, "La modification de liste n'a pu se faire.\n");
+        return;
     }
-    
-    return ptr;
+    else
+    {
+        ptr->id = new_id;
+    }
 }
 
 /* Fonction affichant chaque element de la liste */
@@ -386,7 +376,6 @@ int main()
     ajout_pos(liste, 3, 3);
     sup_case_id(liste, 3);   
     affichage_liste(liste);
-    test = recherche_pos(liste, 3);
     if (test != NULL)
     {
         printf("L'id de la case 3 est %d\n", test->id);
@@ -411,6 +400,8 @@ int main()
     {
         printf("L'id de la case ayant l'id 1 est %d\n", test->id);
     }
+    modif_liste(liste, 1, 4);
+    affichage_liste(liste);
     
     return 0;
 }

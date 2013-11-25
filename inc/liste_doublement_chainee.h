@@ -43,7 +43,7 @@ void sup_case_id(Liste* liste, int id);
 void sup_ids(Liste* liste, int id);
 void suppression_liste(Liste** ptrListe);
 Case* recherche_id(Liste* liste, int id);
-Case* recherche_pos(Liste* liste, int position);
+void modif_liste(Liste* liste, int id, int new_id);
 void affichage_liste(Liste* liste);
 int taille_liste(Liste* liste);
 
