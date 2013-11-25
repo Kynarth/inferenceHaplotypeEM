@@ -59,7 +59,7 @@ static void generation_haplo_possibles(TypeHaploBase* matrice, int lociMax,
     
 }
 
-void affichage_haplotypes(TypeGenoBase geno)
+static void affichage_haplotypes(TypeGenoBase geno)
 {
     int i;
     int j;
@@ -75,13 +75,13 @@ void affichage_haplotypes(TypeGenoBase geno)
 }
 
 /*Verifie chiffre par chiffre si les 2 haplotypes sont egaux*/
-static int verif_doublon(int* haplo1, int* haplo2)
+static int verif_doublon(int* seq1, int* seq2)
 {
     int verifPresenceDoublon = 1;
     int i = 0;
     while ((verifPresenceDoublon == 1)&&(i < TAILLE_GENO))
     {
-        if(haplo1[i] != haplo2[i])
+        if(seq1[i] != seq2[i])
         {
             verifPresenceDoublon = 0;
             return verifPresenceDoublon;
@@ -136,6 +136,7 @@ int initialisation_geno(TypeGenoBase* geno, int id)
     /*Initialisation des parametres du genotype*/
     geno->nbLociAmbigu = compte_nombre_loci_ambigu(*geno);
     geno->nbHaplo = pow(2,geno->nbLociAmbigu);
+    geno->nbIdentique = 1;
     countLoci = 0;
 
     /*Initialisation de la matriceHaplo*/
@@ -185,14 +186,34 @@ int initialisation_geno(TypeGenoBase* geno, int id)
     }
 }*/
 
+void recherche_genotype_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
+{
+    int verif = 0;
+    /*Regarde parmi tous les haplotypes generes dans un second geno2*/
+    verif=0;
+    verif=verif_doublon(geno1->genotype,geno2->genotype);
+    if (verif==1)
+    {
+        geno2->id = geno1->id;
+        printf("Genotype %d est redonant !\n",geno1->id);
+        /*Permet de savoir combien de genotypes seront identique pour le geno1 (de reference)*/
+        geno1->nbIdentique=geno1->nbIdentique+1;
+    }
+}
+
+/* C'EST ICI QU'IL FAUDRAIT FAIRE LE REMPLISSAGE DES LISTES CHAINEES DE GENOTYPES */
 void recherche_haplotyple_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 {
+    /* i correspond au genotype h1*/
+    /* j correspond au genotype h2*/
     int i, j; 
     int verif = 0;
     for(i=0 ; i<geno1->nbHaplo ; i++)
     {
+        /*Regarde parmi tous les haplotypes generes dans un premier geno1*/
         for(j=0 ; j<geno2->nbHaplo ; j++)
         {
+            /*Regarde parmi tous les haplotypes generes dans un second geno2*/
             verif=0;
             verif=verif_doublon(geno1->matriceHaplo[i].haplotype,geno2->matriceHaplo[j].haplotype);
             if (verif==1)
@@ -223,6 +244,7 @@ int calcul_nb_haplo_non_redondant(TypeGenoBase* geno)
 void affichage_genotype(TypeGenoBase geno)
 {
     int i;
+    printf("%d : ",geno.id);
     for(i = 0 ; i < TAILLE_GENO ; i++ )
     {
         printf("%d",geno.genotype[i]);

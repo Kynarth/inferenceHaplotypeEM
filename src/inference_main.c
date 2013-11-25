@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s", PARAM);
+            fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s\n", PARAM);
             exit(1);
         }
         fclose(fichierParam);
@@ -109,6 +109,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
+
     /* Generation des haplotypes possibles */
     for(i=0 ; i<NB_INDIV ; i++)
     {
@@ -116,17 +117,23 @@ int main(int argc, char* argv[])
         id = initialisation_geno(&geno[i],id); 
     }
 
-    /*Indique pour chaque haplotype si c'est un dounlon ou non*/
+    /*Indique pour chaque genotype et haplotype si c'est un dounlon ou non*/
     for (i=0 ; i < NB_INDIV ; i++)
     {
         j = i+1;
         while (j < NB_INDIV)
         {
-            recherche_haplotyple_doublon(&geno[i],&geno[j]);
+            /*Verification des genotypes identique et remplacement de l'id s'il y a similarite*/ 
+            recherche_genotype_doublon(&geno[i],&geno[j]);
+            if(geno[i].id!=geno[j].id)
+            {
+                recherche_haplotyple_doublon(&geno[i],&geno[j]);
+            }
             j++;
         }
         /*(test)afficher_haplotypes(haplo[i],TAILLE_GENO);*/
     }
+    printf("nb de geno 6 : %d\n",geno[6].nbIdentique);
     nbHaploNonRedondant = calcul_nb_haplo_non_redondant(geno);
     printf("nbHaploNonRedondant = %d\n", nbHaploNonRedondant);
     haploNonRedondant = malloc(sizeof(TypeHaploBase) * nbHaploNonRedondant);

@@ -31,6 +31,7 @@ typedef struct TypeGenoBase
 {
     int id;
     int* genotype;
+    int nbIdentique;
     int nbLociAmbigu;
     int nbHaplo;
     TypeHaploBase* matriceHaplo;
@@ -39,11 +40,11 @@ typedef struct TypeGenoBase
 /* fonctions privée ========================================================================== */
 int lire(char* chaine, int longueur, FILE* fichier);
 int initialisation_geno(TypeGenoBase* geno, int id);
+void recherche_genotype_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2);
 void recherche_haplotyple_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2);
 int calcul_nb_haplo_non_redondant(TypeGenoBase* geno);
 void affichage_genotype(TypeGenoBase geno);
 void affichage_haplotype(TypeHaploBase haplo);
-void affichage_haplotypes(TypeGenoBase geno);
 
 
 /* point d'entree ============================================================================ */
