@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     FILE* fichierParam = NULL;
     TypeGenoBase* geno = NULL;
     TypeHaploBase* haploNonRedondant = NULL;
-    TypeHaplo* teteHaplo = NULL;
+    /*TypeHaplo* teteHaplo = NULL; */
 
      /* ========== Code ========== */
     
@@ -157,8 +157,8 @@ int main(int argc, char* argv[])
         }
         printf("\n");
     }*/
-    creation_liste(haploNonRedondant, geno,nbHaploNonRedondant);
-    compl=recherche_haplo_complementaire(haploNonRedondant[0], geno[0]);
+    /*creation_liste(haploNonRedondant, geno,nbHaploNonRedondant);*/
+    /*compl=recherche_haplo_complementaire(haploNonRedondant[0], geno[0]);*/
     printf("Complementaire : %d\n",compl);
     fclose(fichier);
     free(geno);

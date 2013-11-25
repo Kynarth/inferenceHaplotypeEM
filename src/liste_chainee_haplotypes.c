@@ -1,4 +1,4 @@
-/* inference_haplotype_EM */
+/* liste_chainee_haplotypes.c */
 
 /*
  * Auteurs: Julie Pelletier
@@ -12,11 +12,9 @@
 #include "../inc/generation_haplotypes.h"
 #include "../inc/liste_chainee_haplotypes.h" 
 
-/* fonctions privee ========================================================================== */
-
-
 /* fonctions publiques ======================================================================= */
 
+/*
 void creation_liste(TypeHaploBase* listeHaplo, TypeGenoBase* listeGeno, int nbHaploNonRedondant)
 {
     int i;
@@ -25,7 +23,7 @@ void creation_liste(TypeHaploBase* listeHaplo, TypeGenoBase* listeGeno, int nbHa
     {
         printf("");
     }
-}
+}*/
 
 int recherche_haplo_complementaire(TypeHaploBase haploRef, TypeGenoBase geno)
 {   

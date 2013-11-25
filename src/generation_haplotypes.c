@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
+#include "../inc/liste_doublement_chainee.h"
 
 /* fonctions privees ========================================================================= */
 
@@ -204,7 +205,7 @@ void recherche_genotype_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 void recherche_haplotyple_doublon(TypeGenoBase* geno1, TypeGenoBase* geno2)
 {
     /* i correspond au genotype h1 */
-    /* j correspond au genotype h2* /
+    /* j correspond au genotype h2 */
     int i, j; 
     int verif = 0;
     for(i=0 ; i<geno1->nbHaplo ; i++)

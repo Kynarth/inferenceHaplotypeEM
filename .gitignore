@@ -1,5 +1,6 @@
 # Ignorer les répertoires d'exécutables d'objets
 obj/
 exe/
+src/test.c
 .project
 .cproject

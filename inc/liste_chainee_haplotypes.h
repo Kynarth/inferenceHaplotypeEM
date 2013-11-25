@@ -43,7 +43,7 @@ typedef struct TypePaireHaplo
 }TypePaireHaplo;
 
 /* fonctions privée ========================================================================== */
-void creation_liste(TypeHaploBase* listeHaplo, TypeGenoBase* listeGeno, int nbHaploNonRedondant);
+/*void creation_liste(TypeHaploBase* listeHaplo, TypeGenoBase* listeGeno, int nbHaploNonRedondant);*/
 int recherche_haplo_complementaire(TypeHaploBase haploRef, TypeGenoBase geno);
 
 /* point d'entree ============================================================================ */
