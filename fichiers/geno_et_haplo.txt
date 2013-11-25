@@ -1,0 +1,150 @@
+/ind 0 geno	021021<CR>
+/ind 0 real haplo1 011010<CR>
+/ind 0 real haplo2 010011<CR>
+/ind 1 geno	112020<CR>
+/ind 1 real haplo1 101010<CR>
+/ind 1 real haplo2 011010<CR>
+/ind 2 geno	120022<CR>
+/ind 2 real haplo1 010011<CR>
+/ind 2 real haplo2 110011<CR>
+/ind 3 geno	212212<CR>
+/ind 3 real haplo1 111101<CR>
+/ind 3 real haplo2 101111<CR>
+/ind 4 geno	112202<CR>
+/ind 4 real haplo1 001101<CR>
+/ind 4 real haplo2 111101<CR>
+/ind 5 geno	210120<CR>
+/ind 5 real haplo1 100010<CR>
+/ind 5 real haplo2 110110<CR>
+/ind 6 geno	101002<CR>
+/ind 6 real haplo1 100001<CR>
+/ind 6 real haplo2 001001<CR>
+/ind 7 geno	220100<CR>
+/ind 7 real haplo1 110000<CR>
+/ind 7 real haplo2 110100<CR>
+/ind 8 geno	010210<CR>
+/ind 8 real haplo1 010100<CR>
+/ind 8 real haplo2 000110<CR>
+/ind 9 geno	000210<CR>
+/ind 9 real haplo1 000100<CR>
+/ind 9 real haplo2 000110<CR>
+/ind 10 geno	012010<CR>
+/ind 10 real haplo1 011010<CR>
+/ind 10 real haplo2 001000<CR>
+/ind 11 geno	120120<CR>
+/ind 11 real haplo1 110110<CR>
+/ind 11 real haplo2 010010<CR>
+/ind 12 geno	201100<CR>
+/ind 12 real haplo1 100000<CR>
+/ind 12 real haplo2 101100<CR>
+/ind 13 geno	001212<CR>
+/ind 13 real haplo1 001101<CR>
+/ind 13 real haplo2 000111<CR>
+/ind 14 geno	021012<CR>
+/ind 14 real haplo1 011001<CR>
+/ind 14 real haplo2 010011<CR>
+/ind 15 geno	000101<CR>
+/ind 15 real haplo1 000001<CR>
+/ind 15 real haplo2 000100<CR>
+/ind 16 geno	012100<CR>
+/ind 16 real haplo1 001100<CR>
+/ind 16 real haplo2 011000<CR>
+/ind 17 geno	021010<CR>
+/ind 17 real haplo1 010010<CR>
+/ind 17 real haplo2 011000<CR>
+/ind 18 geno	221012<CR>
+/ind 18 real haplo1 111011<CR>
+/ind 18 real haplo2 110001<CR>
+/ind 19 geno	120210<CR>
+/ind 19 real haplo1 110110<CR>
+/ind 19 real haplo2 010100<CR>
+/ind 20 geno	120010<CR>
+/ind 20 real haplo1 010010<CR>
+/ind 20 real haplo2 110000<CR>
+/ind 21 geno	110022<CR>
+/ind 21 real haplo1 000011<CR>
+/ind 21 real haplo2 110011<CR>
+/ind 22 geno	102212<CR>
+/ind 22 real haplo1 001101<CR>
+/ind 22 real haplo2 101111<CR>
+/ind 23 geno	221212<CR>
+/ind 23 real haplo1 111101<CR>
+/ind 23 real haplo2 110111<CR>
+/ind 24 geno	001012<CR>
+/ind 24 real haplo1 000011<CR>
+/ind 24 real haplo2 001001<CR>
+/ind 25 geno	202020<CR>
+/ind 25 real haplo1 101010<CR>
+/ind 25 real haplo2 101010<CR>
+/ind 26 geno	201010<CR>
+/ind 26 real haplo1 100000<CR>
+/ind 26 real haplo2 101010<CR>
+/ind 27 geno	221102<CR>
+/ind 27 real haplo1 111101<CR>
+/ind 27 real haplo2 110001<CR>
+/ind 28 geno	220022<CR>
+/ind 28 real haplo1 110011<CR>
+/ind 28 real haplo2 110011<CR>
+/ind 29 geno	002100<CR>
+/ind 29 real haplo1 001100<CR>
+/ind 29 real haplo2 001000<CR>
+/ind 30 geno	020122<CR>
+/ind 30 real haplo1 010011<CR>
+/ind 30 real haplo2 010111<CR>
+/ind 31 geno	210021<CR>
+/ind 31 real haplo1 110011<CR>
+/ind 31 real haplo2 100010<CR>
+/ind 32 geno	110222<CR>
+/ind 32 real haplo1 100111<CR>
+/ind 32 real haplo2 010111<CR>
+/ind 33 geno	221100<CR>
+/ind 33 real haplo1 111000<CR>
+/ind 33 real haplo2 110100<CR>
+/ind 34 geno	010120<CR>
+/ind 34 real haplo1 000110<CR>
+/ind 34 real haplo2 010010<CR>
+/ind 35 geno	010020<CR>
+/ind 35 real haplo1 000010<CR>
+/ind 35 real haplo2 010010<CR>
+/ind 36 geno	010210<CR>
+/ind 36 real haplo1 010100<CR>
+/ind 36 real haplo2 000110<CR>
+/ind 37 geno	210122<CR>
+/ind 37 real haplo1 110011<CR>
+/ind 37 real haplo2 100111<CR>
+/ind 38 geno	000002<CR>
+/ind 38 real haplo1 000001<CR>
+/ind 38 real haplo2 000001<CR>
+/ind 39 geno	102210<CR>
+/ind 39 real haplo1 001100<CR>
+/ind 39 real haplo2 101110<CR>
+/ind 40 geno	001100<CR>
+/ind 40 real haplo1 000100<CR>
+/ind 40 real haplo2 001000<CR>
+/ind 41 geno	220120<CR>
+/ind 41 real haplo1 110010<CR>
+/ind 41 real haplo2 110110<CR>
+/ind 42 geno	220210<CR>
+/ind 42 real haplo1 110100<CR>
+/ind 42 real haplo2 110110<CR>
+/ind 43 geno	000101<CR>
+/ind 43 real haplo1 000001<CR>
+/ind 43 real haplo2 000100<CR>
+/ind 44 geno	101002<CR>
+/ind 44 real haplo1 100001<CR>
+/ind 44 real haplo2 001001<CR>
+/ind 45 geno	221102<CR>
+/ind 45 real haplo1 110001<CR>
+/ind 45 real haplo2 111101<CR>
+/ind 46 geno	221100<CR>
+/ind 46 real haplo1 111000<CR>
+/ind 46 real haplo2 110100<CR>
+/ind 47 geno	120012<CR>
+/ind 47 real haplo1 010011<CR>
+/ind 47 real haplo2 110001<CR>
+/ind 48 geno	120120<CR>
+/ind 48 real haplo1 010010<CR>
+/ind 48 real haplo2 110110<CR>
+/ind 49 geno	010210<CR>
+/ind 49 real haplo1 000110<CR>
+/ind 49 real haplo2 010100<CR>
