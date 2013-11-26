@@ -24,7 +24,7 @@ void creation_liste(TypeHaploBase* listeHaplo, TypeGenoBase* listeGeno, int nbHa
         printf("");
     }
 }*/
-
+/*
 int recherche_haplo_complementaire(TypeHaploBase haploRef, TypeGenoBase geno)
 {   
     int i;
@@ -66,3 +66,12 @@ int recherche_haplo_complementaire(TypeHaploBase haploRef, TypeGenoBase geno)
     } 
     return complementaire;
 }
+*/
+
+int recherche_haplo_complementaire(TypeGenoBase geno, int indice)
+{
+    int indiceComplementaire;
+    indiceComplementaire = ((geno.nbHaplo+1) - indice);
+    return indiceComplementaire;
+}
+

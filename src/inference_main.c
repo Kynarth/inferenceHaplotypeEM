@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
- #include "../inc/liste_chainee_haplotypes.h" 
+#include "../inc/liste_chainee_haplotypes.h" 
 
 /* point d'entree ============================================================================ */
 
@@ -18,11 +18,11 @@ int main(int argc, char* argv[])
 {  
     /* ====== Declarations ====== */
 
-    int c, i = 0; /* compteurs */
-    int j;
-    int id=0;
+    int c, i, j = 0; /* compteurs */
+    int id = 0;
     int nbLoci = 0;
-    int compl=0;
+    int nbHaplo[2];
+    int nbHaploTotal=0;
     int nbHaploNonRedondant = 0;
     int lireTaille = 0;         /* taille memoire pour la lecture de ligne */
     char* nomFichier;           /* fichier contenant les genotypes */
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     FILE* fichier = NULL;       
     FILE* fichierParam = NULL;
     TypeGenoBase* geno = NULL;
-    TypeHaploBase* haploNonRedondant = NULL;
+    TypeHaplo* tabHaploNR = NULL; /* Tableau des haplotypes non redondants */
     /*TypeHaplo* teteHaplo = NULL; */
 
      /* ========== Code ========== */
@@ -111,7 +111,8 @@ int main(int argc, char* argv[])
     /* Generation des haplotypes possibles */
     for(i=0 ; i<NB_INDIV ; i++)
     {
-        /* Recuperation de l'id afin d'identifier tous les haplotypes avec un id different */
+        /* Recuperation de l'id pour continuer la numerotation 
+         * des haplotypes du genotype suivant */
         id = initialisation_geno(&geno[i],id); 
     }
 
@@ -132,10 +133,16 @@ int main(int argc, char* argv[])
         }
         /*(test)afficher_haplotypes(haplo[i],TAILLE_GENO);*/
     }
-    printf("nb de geno 6 : %d\n",geno[6].nbIdentique);
-    nbHaploNonRedondant = calcul_nb_haplo_non_redondant(geno);
-    printf("nbHaploNonRedondant = %d\n", nbHaploNonRedondant);
-    haploNonRedondant = malloc(sizeof(TypeHaploBase) * nbHaploNonRedondant);
+    
+    /* Calcul du nombre total et du nombre d'haplotypes non redondant */
+    calcul_nb_haplo(geno,nbHaplo);
+    nbHaploTotal = nbHaplo[0];
+    nbHaploNonRedondant = nbHaplo[1];    
+    printf("nblisteHaploTotal = %d\n", nbHaploTotal);
+    printf("nbtabHaploNR = %d\n", nbHaploNonRedondant);
+
+    /* Creation de la liste d'haplotypes non redondante et remplissage */
+    tabHaploNR = malloc(sizeof(TypeHaplo) * nbHaploNonRedondant);
     c = 0;
     for (i=0 ; i < NB_INDIV ; i++)
     {
@@ -143,25 +150,41 @@ int main(int argc, char* argv[])
         {
             if (geno[i].matriceHaplo[j].doublon == 0)
             {
-                haploNonRedondant[c] = geno[i].matriceHaplo[j];
+                tabHaploNR[c] = geno[i].matriceHaplo[j];
                 c++;
             }
         }
     }
-    /*for (i=0 ; i < nbHaploNonRedondant ; i++)
+    /*for (i=0 ; i < nbtabHaploNR ; i++)
     {
-        printf("%d : ",haploNonRedondant[i].id);
+        printf("%d : ",tabHaploNR[i].id);
         for (j=0 ; j < TAILLE_GENO ; j++)
         {
-            printf("%d",haploNonRedondant[i].haplotype[j]);
+            printf("%d",tabHaploNR[i].haplotype[j]);
         }
         printf("\n");
     }*/
+
+    /* Initialisation de la fréquence d'haplotype */
+    for (i=0 ; i<nbHaploNonRedondant ; i++)
+    {
+        tabHaploNR[i].freq = 1.00/nbHaploNonRedondant;
+        printf("%f\n",tabHaploNR[i].freq);
+    }
+    /*creation_liste(tabHaploNR, geno,nbtabHaploNR);*/
+    /*compl=recherche_haplo_complementaire(tabHaploNR[0], geno[0]);*/
+    /*printf("Complementaire : %d\n",compl);*/
+
     /*creation_liste(haploNonRedondant, geno,nbHaploNonRedondant);*/
     /*compl=recherche_haplo_complementaire(haploNonRedondant[0], geno[0]);*/
     printf("Complementaire : %d\n",compl);
+
     fclose(fichier);
     free(geno);
+    
+    
+    
+    /* 
     
     return 0;
 }

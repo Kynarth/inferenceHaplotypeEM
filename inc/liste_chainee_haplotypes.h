@@ -15,27 +15,40 @@
 
 /* structures ================================================================================ */
 
+/* Rempli le tableau de genotypes non redondants */
 typedef struct TypeGeno
+{
+    int idHaploCompl;
+    int nbIndGeno;
+    int proba;
+}TypeGeno;
+
+typedef TypeGeno* TGeno;
+
+/* Rempli les listes chainees de genotypes expliques par les haplotypes */
+typedef struct TypeGenoExplique
 {
     TypeGenoBase base;
     int idHaploCompl;
     int nbIndGeno;
     int proba;
-    struct TypeGeno* next;
-}TypeGeno;
+    TGenoExp next;
+}TypeGenoExplique;
 
-typedef TypeGeno* TGeno;
+typedef TypeGenoExplique* TGenoExp;
 
+/* Rempli le tableau de haplotypes non redondants */
 typedef struct TypeHaplo
 {
-    TypeHaploBase base;
-    int freq;
-    TGeno teteGeno;
-    struct TypeHaplo* next;
+    int id;
+    float freq;
+    int* haplotype;
+    TGenoExp teteGeno;
 }TypeHaplo;
 
 typedef TypeHaplo* THaplo;
 
+/* Rempli les listes chainees de paires d'haplotypes expliquant les genotypes */ 
 typedef struct TypePaireHaplo
 {
     int idHaplo1;
