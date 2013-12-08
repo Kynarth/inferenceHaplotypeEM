@@ -11,6 +11,7 @@
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
 #include "../inc/liste_doublement_chainee.h"
+#include "../inc/inference_haplotype_EM.h"
 
 /* point d'entree ============================================================================ */
 
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
     char* chaine = NULL;        /* chaine qui contiendra les lignes du fichier geno */
     char* sousChaine = NULL;    /* pointeur sur la partie code du genome */
     double** tabFreqHaplo = NULL;
-    double seuil = -1.000000000000001;
+    double seuil = -1.000001;
     FILE* fichier = NULL;       
     FILE* fichierParam = NULL;
     TypeGeno* geno = NULL;   
