@@ -346,9 +346,8 @@ int main(int argc, char* argv[])
 
     /* Inference d'haplotypes EM ================================================================ */
     #if 1
-    inference_haplotype_em(seuil,
-    nbGenoNonRedondant, nbHaploNonRedondant, nbEtapeMax,
-    tabFreqHaplo, tabGenoNR, tabHaploNR);
+    inference_haplotype_em(seuil, nbGenoNonRedondant, nbHaploNonRedondant, nbEtapeMax,
+                           tabFreqHaplo, tabGenoNR, tabHaploNR);
     #endif
 
     /* Tri du tableau de frequence d'haplotype */ 
