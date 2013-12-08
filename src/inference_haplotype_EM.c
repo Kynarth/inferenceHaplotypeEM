@@ -106,7 +106,7 @@ static void modification_frequence_precedente(int id, double freq, double** tabF
     }
 }
 
-/* Calcul du log de la vraissemblance et mise à jour des probas pour chaque genotype */
+/* Calcul du log de la vraisemblance et mise à jour des probas pour chaque genotype */
 static double estimation_esperance(int nbGeno, TypeGeno** geno, double** tabFreq)
 {
     int i;
@@ -135,7 +135,7 @@ static double estimation_esperance(int nbGeno, TypeGeno** geno, double** tabFreq
         geno[i]->probaPrec = proba;
         logLikelihood = logLikelihood + geno[i]->nbIdentique * log10(proba);
         #if 0
-        printf("proba = %f ; Log10 = %f ; NGeno = %d ; vraissemblance = %f\n",proba, log10(proba),geno[i]->nbIdentique,logLikelihood);
+        printf("proba = %f ; Log10 = %f ; NGeno = %d ; vraisemblance = %f\n",proba, log10(proba),geno[i]->nbIdentique,logLikelihood);
         #endif
     }
     return logLikelihood;
@@ -226,8 +226,8 @@ void inference_haplotype_em(double seuil, int nbGeno, int nbHaplo, int nbEtapeMa
     double valConvergence=0.0;
     double valConvergencePrec=0.0;
     #endif
-    double vraissemblance;
-    double vraissemblancePrec = 0.0;
+    double vraisemblance;
+    double vraisemblancePrec = 0.0;
 
     /* Debut */
     calculer_proba_geno(nbGeno, tabGeno, tabFreq);
@@ -238,20 +238,20 @@ void inference_haplotype_em(double seuil, int nbGeno, int nbHaplo, int nbEtapeMa
         printf("*********** ITERATION %d *****************\n",nbEtape);
         #endif
         maximisation(nbHaplo, tabHaplo, tabGeno, tabFreq);
-        vraissemblance = estimation_esperance(nbGeno, tabGeno, tabFreq);
+        vraisemblance = estimation_esperance(nbGeno, tabGeno, tabFreq);
         #if 0
-        printf("V = %f\n",vraissemblance);
+        printf("V = %f\n",vraisemblance);
         #endif
         #if 0
-        valConvergencePrec = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
+        valConvergencePrec = (fabs(vraisemblance-vraisemblancePrec)/vraisemblancePrec);
         convergence = valConvergencePrec == valConvergence;
         #endif
         #if 1
-        convergence = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec) <= seuil;
+        convergence = (fabs(vraisemblance-vraisemblancePrec)/vraisemblancePrec) <= seuil;
         #endif
         #if 0
-        printf("etape : %d => V : %f - VPrec: %f - ",nbEtape,vraissemblance,vraissemblancePrec);
-        printf("calcul convergence : %.30f\n",fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
+        printf("etape : %d => V : %f - VPrec: %f - ",nbEtape,vraisemblance,vraisemblancePrec);
+        printf("calcul convergence : %.30f\n",fabs(vraisemblance-vraisemblancePrec)/vraisemblancePrec);
         #endif
 
         if(convergence == FALSE)
@@ -259,7 +259,7 @@ void inference_haplotype_em(double seuil, int nbGeno, int nbHaplo, int nbEtapeMa
             #if 0
             valConvergence = valConvergencePrec;
             #endif
-            vraissemblancePrec = vraissemblance;
+            vraisemblancePrec = vraisemblance;
             mise_a_jour_proba(nbGeno, tabGeno);
             mise_a_jour_freq(nbHaplo, tabFreq);
         }
