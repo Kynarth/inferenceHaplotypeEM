@@ -229,11 +229,12 @@ TypeBool verification_nombre_loci(TypeHaplo haplo1,
 		i++;
 	}
 	
-	/*(test)printf("__________________\n");*/
-	/*afficher_haplotypes(haplo1);
+	#if 0
+	afficher_haplotypes(haplo1);
 	afficher_haplotypes(haplo2);
 	printf("NB LOCI : %d\n",NB_LOCI);
-	printf("*** %d ***\n",verifNbLoci);*/
+	printf("*** %d ***\n",verifNbLoci);
+	#endif
 	return verifNbLoci;
 }
 
@@ -264,7 +265,8 @@ void initialiser_genotypes(TypeGeno* adrGeno, TypeHaplo haplo[], int nbHaploNonR
     free(adrGeno->genotype);
 }
 
-void recherche_haplotyple_doublon(TypeHaplo haplo[])
+/* Recherche des haplotypes redondant et les marques */
+void recherche_haplotype_doublon(TypeHaplo haplo[])
 {
 	int i;
 	int j;
@@ -284,13 +286,13 @@ void recherche_haplotyple_doublon(TypeHaplo haplo[])
 	}
 }
 
+/* Compte le nombre d'haplotypes non redondant */
 int compte_nombre_doublon(TypeHaplo haplo[])
 {
 	int i;
 	int compteur = 0;
 	for(i=0 ; i<NB_HAPLO ; i++)
 	{
-		printf("+1 : %d\n",haplo[i].doublon);
 		if(haplo[i].doublon == 0)
 		{
 
@@ -300,6 +302,7 @@ int compte_nombre_doublon(TypeHaplo haplo[])
 	return compteur;
 }
 
+/* Repertorie les haplotypes non redondant */
 TypeHaplo* lister_haplo_non_redondant(int compteur, TypeHaplo haplo[])
 {
 	int i;

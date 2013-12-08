@@ -48,22 +48,33 @@ int main(int argc,char* argv[])
 	}
     
     srand (time(NULL));
-    printf("test1");
 	
     /* Suppression des fichiers de genotypes si presents */
 	test_existence(GENO_HAPLO);
 	test_existence(GENOTYPES);
     
+    /* Recuperation des parametres entrees au clavier */
 	nbIndiv = atoi(argv[1]);
 	tailleGeno = atoi(argv[2]);
 	nbLoci = atoi(argv[3]);
+
+	/* Verifications des parametres entrees au clavier */
     if (tailleGeno <= nbLoci)
     {
         printf("Le nombre de loci ambigu maximum doit etre inferieur à la taille du genotype.\n");
         exit(1);
     }
-	nbHaplo = 0.7*2*nbIndiv;
+
+    /* 
+     * Determination du nombre d'haplotypes que l'on veut generer 
+     * pour creer la liste d'haplotypes qui servira a faire generer les genotypes
+     * Le premier nombre peut etre modifier : il faut le faire varier entre 0.1 et 1.
+     *     - a 0.1 : il y aura autant d'haplotypes que de genotypes
+     *     - a 1.0 : il y aura 2 fois plus d'haplotypes que de genotypes 
+     */
+	nbHaplo = 0.5*2*nbIndiv;
     
+    /* Allocation de memoire pour les tableaux de genotypes et d'haplotypes */
     haplo = malloc(NB_HAPLO * sizeof(TypeHaplo));
     geno = malloc(NB_INDIV * sizeof(TypeGeno));
 
@@ -82,9 +93,10 @@ int main(int argc,char* argv[])
 	 */
 	recherche_haplotyple_doublon(haplo);
     nbNonRedondant = compte_nombre_doublon(haplo);
+    /* Création de la liste d'haplotypes non redondants qui sera utilisee */
     haploNonRedondant = lister_haplo_non_redondant(nbNonRedondant, haplo);
     
-    /* (test)Affichage des résultats */
+    /* Affichage des résultats */
 	printf("nb de genotypes générés : %d \n",NB_INDIV);
 	printf("nb d'haplotypes générés : %d \n",NB_HAPLO);
 	printf("taille du genome : %d \n",TAILLE_GENO);
@@ -104,6 +116,10 @@ int main(int argc,char* argv[])
     }
     fclose(fichier);
     
+    /* 
+     * Initialisation des génotypes en tirant aléatoirement des haplotypes 
+     * issues de la liste cree precedemment 
+     */
 	for (i = 0 ; i < NB_INDIV ; i++)
     {
 		geno[i].id=i;
