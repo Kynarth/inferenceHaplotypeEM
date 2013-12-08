@@ -10,23 +10,26 @@
 
 #include "../inc/liste_doublement_chainee.h"
 
-/* variables globales ======================================================================== */
+/* variables globales =========================================================================== */
 
 double nbIndiv;
 int tailleGeno;
 
-/* constantes ================================================================================ */
+/* constantes =================================================================================== */
 
 #define PARAM "./fichiers/parametres.txt"
 #define TAILLE_GENO tailleGeno /* longueur du fragment d'ADN observe */
-#define NB_INDIV nbIndiv       /* nombre d'individus sur lesquels les genotypes seront observe */
+#define NB_INDIV nbIndiv       /* nombre d'individus sur lesquels les genotypes seront observes */
 
-/* fonctions tests =========================================================================== */
+/* fonctions tests ============================================================================== */
+
 void affichage_haplotypes(TypeGeno geno);
 void affichage_genotype(TypeGeno geno);
 void affichage_haplotype(TypeHaplo haplo);
 int verif_doublon(int* seq1, int* seq2);
-/* fonctions privée ========================================================================== */
+
+/* point d'entree =============================================================================== */
+
 int lire(char* chaine, int longueur, FILE* fichier);
 int compare (const void *a, const void *b);
 int initialisation_geno(TypeGeno* geno, int id);
@@ -38,15 +41,6 @@ int calcul_nb_geno_non_redondant(TypeGeno* geno);
 int recherche_haplo_complementaire(TypeGeno geno, int indice);
 double** allouer_memoire_tableau_2d(int nb);
 double recherche_frequence(int id,double** tableau);
-
-/* Fonctions d'inference d'haplotypes */
-void inference_haplotype_em(double seuil,
-    int nbGeno, int nbHaplo, int nbEtapeMax,
-    double** tabFreq,
-    TypeGeno** tabGeno,
-    TypeHaplo** tabHaplo);
-
-/* point d'entree ============================================================================ */
 
 
 #endif /* H_GENERATION_HAPLOTYPES */

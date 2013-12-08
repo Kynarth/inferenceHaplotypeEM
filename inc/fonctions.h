@@ -8,14 +8,14 @@
  *          Nicolas Belouin
  */
 
-/* variables globales ======================================================================== */
+/* variables globales =========================================================================== */
 
 int nbIndiv;
 int tailleGeno;
 int nbHaplo;
 int nbLoci;
 
-/* constantes ================================================================================ */
+/* constantes =================================================================================== */
 
 #define TAILLE_GENO tailleGeno /* longueur du fragment d'ADN observe */
 #define NB_INDIV nbIndiv /* nombre d'individus sur lesquels les genotypes seront observe */
@@ -25,7 +25,7 @@ int nbLoci;
 #define GENO_HAPLO "./fichiers/geno_et_haplo.txt"
 #define GENOTYPES "./fichiers/genotypes.txt"
 
-/* types ===================================================================================== */
+/* types ======================================================================================== */
 
 typedef enum
 {
@@ -33,7 +33,7 @@ typedef enum
 	VRAI
 }TypeBool;
 
-/* structures ================================================================================ */
+/* structures =================================================================================== */
 
 typedef struct TypeHaplo
 {
@@ -50,7 +50,7 @@ typedef struct TypeGeno
 	int* genotype;
 }TypeGeno;
 
-/* point d'entree ============================================================================ */
+/* point d'entree =============================================================================== */
 
 void test_existence(const char* nomFichier);
 int* alloue_memoire();

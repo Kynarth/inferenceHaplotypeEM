@@ -8,14 +8,14 @@
  *          Nicolas Belouin
  */
 
-/* types ===================================================================================== */
+/* types ======================================================================================== */
 
 typedef enum {
         FALSE,
         TRUE
 } bool_t;
 
-/* structures ================================================================================ */
+/* structures =================================================================================== */
 
 /* Cellules des listes chainees contenu dans le tableau d'haplotypes non redondants 
  * Elles constituent les genotypes qui sont expliques par les haplotypes*/
@@ -74,7 +74,7 @@ struct TypeGeno
     TypePaireHaplo* last;
 };
 
-/* fonctions ================================================================================= */
+/* point d'entree =============================================================================== */
 
 TypeHaplo* initialiser_liste_geno(int tailleGeno);
 TypeGeno* initialiser_liste_haplo(int tailleGeno);
@@ -92,5 +92,6 @@ void modif_liste(TypeHaplo* liste, int id, int new_id);
 void affichage_liste_geno(TypeHaplo* liste);
 void affichage_liste_paire_haplo(TypeGeno* liste);
 int taille_Liste(TypeHaplo* liste);
+
 
 #endif /* H_LISTE_DOUBLEMENT_CHAINEE */

@@ -10,7 +10,7 @@
 #include <string.h>
 #include "../inc/fonctions.h"
 
-/* fonctions privees ========================================================================= */
+/* fonctions privees ============================================================================ */
 
 /* Generation aleatoire de "0" et de "1" */
 static int random_binaire()
@@ -116,7 +116,7 @@ static void creation_fichier_geno(TypeGeno* adrGeno)
 	fclose(fichier1);
 }
 
-/* fonctions publiques ======================================================================= */
+/* fonctions publiques ========================================================================== */
 
 /* Supprime les fichiers genotypes precedemment genere */
 void test_existence(const char* nomFichier)

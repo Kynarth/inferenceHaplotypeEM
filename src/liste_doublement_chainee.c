@@ -13,7 +13,7 @@
 #define NB_HAPLO 5
 #define TAILLE_GENO 10
 
-/* fonctions publiques ======================================================================= */
+/* fonctions publiques ========================================================================== */
 
 /* Fonction d'initilisation d'une liste chainee de genotype */
 TypeHaplo* initialiser_liste_geno(int tailleGeno)
@@ -37,7 +37,7 @@ TypeHaplo* initialiser_liste_geno(int tailleGeno)
     return liste;
 }
 
-/* Focntion d'initilisation d'une liste chainee de paire d'haplotypes */
+/* Focntion d'initilisation d'une liste chainee de paires d'haplotypes */
 TypeGeno* initialiser_liste_haplo(int tailleGeno)
 {
     /* Allocation de l'haplotype */
@@ -467,7 +467,7 @@ int taille_liste(TypeHaplo* liste)
 }
 
 
-/* point d'entree ============================================================================ */
+/* point d'entree =============================================================================== */
 #if 0
 int main()
 {
@@ -498,6 +498,8 @@ int main()
     /* Liberation de la mémoire de chaque element du tableau puis du tableau */
     for (i = 0; i < 100; i++)
     {
+        suppression_liste_geno(&tabHaploNR[i]);
+        
         free(tabListe[i]);
         tabListe[i] = NULL;
     }

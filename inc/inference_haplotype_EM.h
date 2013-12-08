@@ -11,12 +11,10 @@
 #include "../inc/generation_haplotypes.h"
 #include "../inc/liste_doublement_chainee.h"
 
-/* fonctions privée ========================================================================== */
+/* point d'entree =============================================================================== */
 
- void inference_haplotype_em(double seuil,
-    int nbGeno, int nbHaplo, int nbEtapeMax,
-    double** tabFreq,
-    TypeGeno** tabGeno,
-    TypeHaplo** tabHaplo);
-
+ void inference_haplotype_em(double seuil, int nbGeno, int nbHaplo, int nbEtapeMax,
+                             double** tabFreq, TypeGeno** tabGeno, TypeHaplo** tabHaplo);
+                             
+                             
 #endif /* H_INFERENCE_HAPLOTYPE_EM */

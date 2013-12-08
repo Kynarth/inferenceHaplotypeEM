@@ -1,4 +1,4 @@
-/* generation_haplotypes.c */
+/* inference_haplotype_EM.c */
 
 /*
  * Auteurs: Julie Pelletier
@@ -12,9 +12,9 @@
 #include "../inc/inference_haplotype_EM.h"
 
 
-/* fonctions privees ========================================================================= */
+/* fonctions privees ============================================================================ */
 
- /* Recherche et retourne la frequence associee a l'id d'haplotype voulu */
+ /* Recherche et retourne la frequence associee a l'id de l'haplotype voulu */
 static double recherche_frequence_precedente(int id, double** tableauFrequence)
 {
     int i = 0;
@@ -98,14 +98,14 @@ static void modification_frequence_precedente(int id, double freq, double** tabF
     {
         if(id == tabFreq[i][0])
         {
-            tabFreq[i][2] = freq; /*Rempli la colonne des frequences precedentes*/
+            tabFreq[i][2] = freq; /* Rempli la colonne des frequences precedantes */
             trouve = TRUE;
         }
         i++;
     }
 }
 
-/* Calcul du log de la vraissemblance et mise à jour des proba pour chaque genotype */
+/* Calcul du log de la vraissemblance et mise à jour des probas pour chaque genotype */
 static double estimation_esperance(int nbGeno, TypeGeno** geno, double** tabFreq)
 {
     int i;
@@ -154,23 +154,23 @@ static void maximisation(int nbHaplo, TypeHaplo** haplo, TypeGeno** geno, double
         printf("freqPrec1 : %.10f\n",freqPrec1);
         #endif
         freq = 0;
-        /*Parcours de chaque liste chainee de genotype*/
+        /* Parcours de chaque liste chainee de genotypes */
         listeGenoExp = haplo[i]->first;
         while(listeGenoExp != NULL)
         {
-            /*Recuperation des informations du genotype observe*/
+            /* Recuperation des informations du genotype observe */
             genoCourant = recherche_genotype(listeGenoExp->id, geno);
             #if 0
             printf("id : %d - id2 : %d ",haplo[i]->id,listeGenoExp->idHaploCompl);
             #endif
-            /*Homozygotie*/
+            /* Homozygotie */
             if(haplo[i]->id == listeGenoExp->idHaploCompl)
             {
                 contribution = 2.0*((freqPrec1 * freqPrec1)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
             }
-            else /*Heterozygotie*/
+            else /* Heterozygotie */
             {
-                /*printf("id pour freqH2 : %d\n",listeGenoExp->idHaploCompl);*/
+                /* printf("id pour freqH2 : %d\n",listeGenoExp->idHaploCompl); */
                 freqPrec2 = recherche_frequence_precedente(listeGenoExp->idHaploCompl,tabFreq);
                 contribution = 2.0*((freqPrec1 * freqPrec2)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
                 #if 0
@@ -210,7 +210,7 @@ static void mise_a_jour_freq(int nbHaplo, double** tabFreq)
     }
 }
 
-/* fonctions publiques ======================================================================= */
+/* fonctions publiques ========================================================================== */
 
 void inference_haplotype_em(double seuil,
     int nbGeno, int nbHaplo, int nbEtapeMax,
@@ -218,13 +218,13 @@ void inference_haplotype_em(double seuil,
     TypeGeno** tabGeno,
     TypeHaplo** tabHaplo)
 {
-    /*Varaibles locales*/
+    /* Variables locales */
     bool_t convergence = FALSE;
     int nbEtape = 0;
     double vraissemblance;
     double vraissemblancePrec = -1E+20;
 
-    /*Debut*/
+    /* Debut */
     calculer_proba_geno(nbGeno, tabGeno, tabFreq);
     while((convergence == FALSE) && (nbEtape < nbEtapeMax))
     {

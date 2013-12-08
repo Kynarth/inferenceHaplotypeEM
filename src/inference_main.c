@@ -13,7 +13,7 @@
 #include "../inc/liste_doublement_chainee.h"
 #include "../inc/inference_haplotype_EM.h"
 
-/* point d'entree ============================================================================ */
+/* point d'entree =============================================================================== */
 
 int main(int argc, char* argv[])
 {  
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     FILE* fichierParam = NULL;
     TypeGeno* geno = NULL;   
     TypeHaplo** tabHaploNR = NULL; /* tableau d'haplotypes non redondant */
-    TypeGeno** tabGenoNR = NULL;  /* tableau de genotypes non redondant */
+    TypeGeno** tabGenoNR = NULL;   /* tableau de genotypes non redondant */
     
      /* ========== Code ========== */
     
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
         id = initialisation_geno(&geno[i],id); 
     }
 
-    /* Indique pour chaque genotype et haplotype si c'est un doublon ou non */
+    /* Indique pour chaque genotype et haplotype si celui-ci est un doublon ou non */
     for (i=0 ; i < NB_INDIV ; i++)
     {
         j = i+1;
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
     }
 
     #if 0
-    /* Allocation du tableau de genotypes */
+    /* Allocation du tableau de genotypes non redondant */
     tabHaploNR = (TypeGeno**)malloc(sizeof(TypeGeno*) * nbHaploNonRedondant);
     if (tabGenoNR == NULL)
     {
@@ -212,14 +212,14 @@ int main(int argc, char* argv[])
     /*** TEST 2 ***/
 	#endif
     
-	/* Ajout des genotypes explique par l'haplo dans la liste correspondante */
+	/* Ajout des genotypes expliques par l'haplotype dans la liste correspondante */
     for (c=0; c < nbHaploNonRedondant; c++)
     {
         idGenoMax = 0;
         for (i=0; i < NB_INDIV; i++)
         {
-            /* Genotype actuel non redondant donc introduit dans le tableau d'haplotype au niv des 
-             * listes chainees */
+            /* Genotype actuel non redondant donc introduit dans le tableau d'haplotypes au niveau
+             * des listes chainees */
             if(idGenoMax <= geno[i].id)
             {
                 for (j=0; j < geno[i].nbHaplo; j++)
@@ -233,7 +233,7 @@ int main(int argc, char* argv[])
             }
             else
             {
-                /* Modification du nombre de genotype identique dans le tableau de genotype au 
+                /* Modification du nombre de genotypes identiques dans le tableau de genotype au 
                  * niveau des structures (ajout d'un +1 a geno[i].nbIdentique) */
                
             }
@@ -248,7 +248,7 @@ int main(int argc, char* argv[])
     }
     #endif
     
-	/* Initialisation du tableau de frequence d'haplotype */
+	/* Initialisation du tableau de frequences d'haplotypes */
     tabFreqHaplo = allouer_memoire_tableau_2d(nbHaploNonRedondant); 
     for (i=0 ; i<nbHaploNonRedondant ; i++)
     {
@@ -344,7 +344,7 @@ int main(int argc, char* argv[])
     }
     #endif
 
-    /* Inference d'haplotypes EM ================================================================*/
+    /* Inference d'haplotypes EM ================================================================ */
     #if 1
     inference_haplotype_em(seuil,
     nbGenoNonRedondant, nbHaploNonRedondant, nbEtapeMax,

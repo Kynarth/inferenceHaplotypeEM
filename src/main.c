@@ -15,7 +15,7 @@
 #define GENO_HAPLO "./fichiers/geno_et_haplo.txt"
 #define GENOTYPES "./fichiers/genotypes.txt"
 
-/* point d'entree ============================================================================ */
+/* point d'entree =============================================================================== */
 
 int main(int argc,char* argv[])
 {
