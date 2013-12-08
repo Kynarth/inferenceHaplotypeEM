@@ -47,7 +47,8 @@ static void calculer_proba_geno(int nbGeno, TypeGeno** geno, double** tabFreq)
             freqH1 = recherche_frequence_precedente(listePaireHaplo->idHaplo1,tabFreq);
             freqH2 = recherche_frequence_precedente(listePaireHaplo->idHaplo2,tabFreq);
             #if 1
-            printf("freqH1 : %.10f - freqH2 : %.10f -",freqH1,freqH2);
+            printf("________________________________ G%d ______________________________________\n",geno[i]->id);
+            printf("freqH1 : %f - freqH2 : %f - ",freqH1,freqH2);
             #endif
             if(listePaireHaplo->idHaplo1 == listePaireHaplo->idHaplo2)
             {
@@ -58,8 +59,8 @@ static void calculer_proba_geno(int nbGeno, TypeGeno** geno, double** tabFreq)
                 ppart = 2 * freqH1 * freqH2;
             }
             proba = proba + ppart;
-            #if 0
-            printf("Proba : %.10f\n",proba);
+            #if 1
+            printf("Proba : %f\n",proba);
             #endif
             listePaireHaplo = listePaireHaplo->next;
         }
@@ -149,9 +150,12 @@ static void maximisation(int nbHaplo, TypeHaplo** haplo, TypeGeno** geno, double
     TypeGeno* genoCourant;
     for(i=0 ; i<nbHaplo ; i++)
     {
+        #if 0
+        printf("========= H%d ===============\n",haplo[i]->id);
+        #endif
         freqPrec1 = recherche_frequence_precedente(haplo[i]->id,tabFreq);
         #if 0
-        printf("freqPrec1 : %.10f\n",freqPrec1);
+        printf("freqPrec1 : %f\n",freqPrec1);
         #endif
         freq = 0;
         /* Parcours de chaque liste chainee de genotypes */
@@ -166,13 +170,13 @@ static void maximisation(int nbHaplo, TypeHaplo** haplo, TypeGeno** geno, double
             /* Homozygotie */
             if(haplo[i]->id == listeGenoExp->idHaploCompl)
             {
-                contribution = 2.0*((freqPrec1 * freqPrec1)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
+                contribution = (2.0*((freqPrec1 * freqPrec1)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV))*100;
             }
             else /* Heterozygotie */
             {
                 /* printf("id pour freqH2 : %d\n",listeGenoExp->idHaploCompl); */
                 freqPrec2 = recherche_frequence_precedente(listeGenoExp->idHaploCompl,tabFreq);
-                contribution = 2.0*((freqPrec1 * freqPrec2)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
+                contribution = (2.0*((freqPrec1 * freqPrec2)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV))*100;
                 #if 0
                 printf("Ngeno = %d - Ngeno/Nindiv = %f - ",genoCourant->nbIdentique,genoCourant->nbIdentique/NB_INDIV);
                 printf("freqH2 : %.5f - ",freqPrec2);
@@ -221,25 +225,41 @@ void inference_haplotype_em(double seuil,
     /* Variables locales */
     bool_t convergence = FALSE;
     int nbEtape = 0;
+    #if 0
+    double valConvergence=0.0;
+    double valConvergencePrec=0.0;
+    #endif
     double vraissemblance;
-    double vraissemblancePrec = -1E+20;
+    double vraissemblancePrec = 0;
 
     /* Debut */
     calculer_proba_geno(nbGeno, tabGeno, tabFreq);
     while((convergence == FALSE) && (nbEtape < nbEtapeMax))
     {
         nbEtape++;
+        #if 1
+        printf("*********** ITERATION %d *****************\n",nbEtape);
+        #endif
         maximisation(nbHaplo, tabHaplo, tabGeno, tabFreq);
         vraissemblance = estimation_esperance(nbGeno, tabGeno, tabFreq);
-        printf("V = %.20f\n",vraissemblance);
-        convergence = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec) <= seuil;
         #if 0
+        printf("V = %f\n",vraissemblance);
+        #endif
+        #if 0
+        valConvergencePrec = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
+        convergence = valConvergencePrec == valConvergence;
+        #endif
+        convergence = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec) <= seuil;
+        #if 1
         printf("etape : %d => V : %f - VPrec: %f - ",nbEtape,vraissemblance,vraissemblancePrec);
         printf("calcul convergence : %.30f\n",fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
         #endif
 
         if(convergence == FALSE)
         {
+            #if 0
+            valConvergence = valConvergencePrec;
+            #endif
             vraissemblancePrec = vraissemblance;
             mise_a_jour_proba(nbGeno, tabGeno);
             mise_a_jour_freq(nbHaplo, tabFreq);

@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     char* chaine = NULL;        /* chaine qui contiendra les lignes du fichier geno */
     char* sousChaine = NULL;    /* pointeur sur la partie code du genome */
     double** tabFreqHaplo = NULL;
-    double seuil = -1.000001;
+    double seuil = 0.000000000000000000000000001;
     FILE* fichier = NULL;       
     FILE* fichierParam = NULL;
     TypeGeno* geno = NULL;   
@@ -356,7 +356,7 @@ int main(int argc, char* argv[])
     #if 1
     for(i=0 ; i<10 ; i++)
     {
-        printf("%f %f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1]);
+        printf("%.0f %.2f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1]);
     }
     #endif
 
