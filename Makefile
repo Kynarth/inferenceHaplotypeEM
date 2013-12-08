@@ -1,3 +1,5 @@
+mkdir -p $(EXE)
+
 SRC = src/
 INC = inc/
 EXE = exe/
