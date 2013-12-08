@@ -149,7 +149,9 @@ static void calculer_proba_geno(int nbGeno, TypeGeno** geno, double** tabFreq)
         {
             freqH1 = recherche_frequence_precedente(listePaireHaplo->idHaplo1,tabFreq);
             freqH2 = recherche_frequence_precedente(listePaireHaplo->idHaplo2,tabFreq);
-            printf("freqH1 : %.20f - freqH2 : %.20f -",freqH1,freqH2);
+            #if 0
+            printf("freqH1 : %.10f - freqH2 : %.10f -",freqH1,freqH2);
+            #endif
             if(listePaireHaplo->idHaplo1 == listePaireHaplo->idHaplo2)
             {
                 ppart = freqH1 * freqH1;
@@ -159,11 +161,15 @@ static void calculer_proba_geno(int nbGeno, TypeGeno** geno, double** tabFreq)
                 ppart = 2 * freqH1 * freqH2;
             }
             proba = proba + ppart;
-            printf("Proba : %.20f\n",proba);
+            #if 0
+            printf("Proba : %.10f\n",proba);
+            #endif
             listePaireHaplo = listePaireHaplo->next;
         }
         geno[i]->probaPrec = proba;
-        printf("G%d - proba=%.20f\n",geno[i]->id,proba);
+        #if 0
+        printf("G%d - proba=%.10f\n",geno[i]->id,proba);
+        #endif
     }
 }
 
@@ -195,6 +201,9 @@ static double estimation_esperance(int nbGeno, TypeGeno** geno, double** tabFreq
         }
         geno[i]->probaPrec = proba;
         logLikelihood = logLikelihood + geno[i]->nbIdentique * log10(proba);
+        #if 0
+        printf("proba = %f ; Log10 = %f ; NGeno = %d ; vraissemblance = %f\n",proba, log10(proba),geno[i]->nbIdentique,logLikelihood);
+        #endif
     }
     return logLikelihood;
 }
@@ -244,27 +253,42 @@ static void maximisation(int nbHaplo, TypeHaplo** haplo, TypeGeno** geno, double
     for(i=0 ; i<nbHaplo ; i++)
     {
         freqPrec1 = recherche_frequence_precedente(haplo[i]->id,tabFreq);
+        #if 0
+        printf("freqPrec1 : %.10f\n",freqPrec1);
+        #endif
         freq = 0;
+        /*Parcours de chaque liste chainee de genotype*/
         listeGenoExp = haplo[i]->first;
         while(listeGenoExp != NULL)
         {
+            /*Recuperation des informations du genotype observe*/
             genoCourant = recherche_genotype(listeGenoExp->id, geno);
+            #if 0
+            printf("id : %d - id2 : %d ",haplo[i]->id,listeGenoExp->idHaploCompl);
+            #endif
+            /*Homozygotie*/
             if(haplo[i]->id == listeGenoExp->idHaploCompl)
             {
                 contribution = 2.0*((freqPrec1 * freqPrec1)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
             }
-            else
+            else /*Heterozygotie*/
             {
                 /*printf("id pour freqH2 : %d\n",listeGenoExp->idHaploCompl);*/
                 freqPrec2 = recherche_frequence_precedente(listeGenoExp->idHaploCompl,tabFreq);
                 contribution = 2.0*((freqPrec1 * freqPrec2)/genoCourant->probaPrec)*(genoCourant->nbIdentique/NB_INDIV);
-                printf("Contribution : %.10f\n",contribution);
+                #if 0
+                printf("Ngeno = %d - Ngeno/Nindiv = %f - ",genoCourant->nbIdentique,genoCourant->nbIdentique/NB_INDIV);
+                printf("freqH2 : %.5f - ",freqPrec2);
+                printf("Contribution : %.5f\n",contribution);
+                #endif
             }
             freq = freq + contribution;
             listeGenoExp = listeGenoExp->next;
         }
         freq = freq/2.0;
-        printf("freq = %.20f\n",freq);
+        #if 0
+        printf("freq = %.10f\n",freq);
+        #endif
         modification_frequence_precedente(haplo[i]->id,freq,tabFreq);
     }
 }
@@ -395,6 +419,12 @@ int initialisation_geno(TypeGeno* geno, int id)
         }
         generation_haplo_possibles(geno->matriceHaplo,geno->nbHaplo,countLoci,i,geno->genotype[i]);
     }
+    #if 1
+    printf("*********************\n");
+    affichage_genotype(*geno);
+    printf("---------------------\n");
+    affichage_haplotypes(*geno);
+    #endif
     /*** TEST 5 ***/
 
     return id;
@@ -411,6 +441,7 @@ void recherche_genotype_doublon(TypeGeno* geno1, TypeGeno* geno2)
     {
         geno2->id = geno1->id;
         geno2->doublon = 1;
+        geno1->nbIdentique = geno1->nbIdentique +1;
         /*printf("Genotype %d est redondant !\n",geno1->id);*/
         /*geno1->nbIdentique=geno1->nbIdentique+1;*/
     }
@@ -491,7 +522,15 @@ int calcul_nb_geno_non_redondant(TypeGeno* geno)
 int recherche_haplo_complementaire(TypeGeno geno, int indice)
 {
     int indiceComplementaire;
-    indiceComplementaire = ((geno.nbHaplo-1) - indice); /*miroir*/
+    if(geno.nbHaplo > 1)
+    {
+        indiceComplementaire = ((geno.nbHaplo-1) - indice); /*miroir*/ 
+    }
+    else
+    {
+        indiceComplementaire = indice;
+    }
+    
     return indiceComplementaire;
 }
 
@@ -520,7 +559,7 @@ void inference_haplotype_em(double seuil,
     bool_t convergence = FALSE;
     int nbEtape = 0;
     double vraissemblance;
-    double vraissemblancePrec = 1E-10;
+    double vraissemblancePrec = -1E+20;
 
     /*Debut*/
     calculer_proba_geno(nbGeno, tabGeno, tabFreq);
@@ -531,8 +570,11 @@ void inference_haplotype_em(double seuil,
         vraissemblance = estimation_esperance(nbGeno, tabGeno, tabFreq);
         printf("V = %.20f\n",vraissemblance);
         convergence = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec) <= seuil;
-        /*printf("etape : %d => V : %.10f - VPrec: %.10f - ",nbEtape,vraissemblance,vraissemblancePrec);
-        printf("calcul convergence : %.10f\n",fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);*/
+        #if 1
+        printf("etape : %d => V : %f - VPrec: %f - ",nbEtape,vraissemblance,vraissemblancePrec);
+        printf("calcul convergence : %.30f\n",fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
+        #endif
+
         if(convergence == FALSE)
         {
             vraissemblancePrec = vraissemblance;

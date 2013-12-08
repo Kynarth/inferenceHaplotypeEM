@@ -95,7 +95,7 @@ void ajout_tete(TypeHaplo* liste, int id)
 }
 
 /* Fonction d'ajout d'un genotype en fin de liste */
-void ajout_queue_geno(TypeHaplo* liste, int id)
+void ajout_queue_geno(TypeHaplo* liste, int id, int idHaplo)
 {
     if (liste != NULL)
     {
@@ -107,6 +107,7 @@ void ajout_queue_geno(TypeHaplo* liste, int id)
             exit(1);
         }
         nouvelleCase->id =id;
+        nouvelleCase->idHaploCompl = idHaplo;
         nouvelleCase->next = NULL;
         
         /* Cas ou la liste est vide */
@@ -159,6 +160,7 @@ void ajout_queue_paire_haplo(TypeGeno* liste, int id1, int id2)
     }
 }
 
+#if 0
 /* Fonction permettant l'ajout d'un element a la position souhaitee */
 void ajout_pos(TypeHaplo* liste, int id, int position)
 {
@@ -209,6 +211,7 @@ void ajout_pos(TypeHaplo* liste, int id, int position)
         }
     }
 }
+#endif
 
 /* Fonction supprimant un element en fonction de sa position */
 void sup_pos(TypeHaplo* liste, int position)
@@ -419,7 +422,7 @@ void affichage_liste_geno(TypeHaplo* liste)
     {
         while (ptr != NULL)
         {
-            printf("%d > ", ptr->id);
+            printf("%d/%d > ", ptr->id,ptr->idHaploCompl);
             ptr = ptr->next;
         }
         printf("NULL\n");

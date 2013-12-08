@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     int id = 0;
     int idGenoMax = 0;
     int nbLoci = 0;
-    int nbEtapeMax = 10;
+    int nbEtapeMax = 10000;
     int nbHaploNonRedondant = 0;
     int nbGenoNonRedondant = 0;
     int lireTaille = 0;         /* taille memoire pour la lecture de ligne */
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     char* chaine = NULL;        /* chaine qui contiendra les lignes du fichier geno */
     char* sousChaine = NULL;    /* pointeur sur la partie code du genome */
     double** tabFreqHaplo = NULL;
-    double seuil = 1.0;
+    double seuil = -1.000000000000001;
     FILE* fichier = NULL;       
     FILE* fichierParam = NULL;
     TypeGeno* geno = NULL;   
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
         fichierParam = fopen(PARAM, "r");
         if (fichierParam != NULL)
         {
-            fscanf(fichierParam, "%d", &nbIndiv);
+            fscanf(fichierParam, "%lf", &nbIndiv);
             fscanf(fichierParam, "%d", &tailleGeno);
             fscanf(fichierParam, "%d", &nbLoci);
         }
@@ -135,10 +135,10 @@ int main(int argc, char* argv[])
         /*** TEST 1 ***/
     }
 
-    #if 0
+    #if 1
     for (i=0 ; i < NB_INDIV ; i++)
     {
-        printf("G%d (d=%d) : ",geno[i].id,geno[i].doublon);
+        printf("G%d (d=%d) + nbIdentique = %d : ",geno[i].id,geno[i].doublon,geno[i].nbIdentique);
         for(j=0 ; j<geno[i].nbHaplo ; j++)
         {
             printf("H%d - ",geno[i].matriceHaplo[j].id);
@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
                 {
                     if (tabHaploNR[c]->id == geno[i].matriceHaplo[j].id)
                     {
-                        ajout_queue_geno(tabHaploNR[c], geno[i].id);
+                        ajout_queue_geno(tabHaploNR[c], geno[i].id,geno[i].matriceHaplo[recherche_haplo_complementaire(geno[i],j)].id);
                     }
                 }
                 idGenoMax = geno[i].id;
@@ -262,9 +262,6 @@ int main(int argc, char* argv[])
     }
     #endif
 
-    /* Tri du tableau de frequence d'haplotype */ 
-    qsort (tabFreqHaplo, nbHaploNonRedondant , sizeof*tabFreqHaplo, compare);
-
     /* Allocation du tableau de genotypes */
     tabGenoNR = (TypeGeno**)malloc(sizeof(TypeGeno*) * nbGenoNonRedondant);
     if (tabGenoNR == NULL)
@@ -286,6 +283,9 @@ int main(int argc, char* argv[])
         if (geno[i].doublon == 0)
         {
             tabGenoNR[c]->id = geno[i].id;
+            tabGenoNR[c]->nbIdentique = geno[i].nbIdentique;
+            tabGenoNR[c]->nbHaplo = geno[i].nbHaplo;
+
             for (j=0; j < TAILLE_GENO; j++)
             {
                 tabGenoNR[c]->genotype[j] = geno[i].genotype[j];
@@ -344,9 +344,20 @@ int main(int argc, char* argv[])
     #endif
 
     /* Inference d'haplotypes EM ================================================================*/
+    #if 1
     inference_haplotype_em(seuil,
     nbGenoNonRedondant, nbHaploNonRedondant, nbEtapeMax,
     tabFreqHaplo, tabGenoNR, tabHaploNR);
+    #endif
+
+    /* Tri du tableau de frequence d'haplotype */ 
+    qsort (tabFreqHaplo, nbHaploNonRedondant , sizeof*tabFreqHaplo, compare);
+    #if 1
+    for(i=0 ; i<10 ; i++)
+    {
+        printf("%f %f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1]);
+    }
+    #endif
 
     /* Liberation de la memoire alloue au tableau de frequences des haplotypes */
     for (i=0; i < nbHaploNonRedondant; i++)

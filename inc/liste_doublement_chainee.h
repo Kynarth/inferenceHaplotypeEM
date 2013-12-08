@@ -79,10 +79,10 @@ struct TypeGeno
 TypeHaplo* initialiser_liste_geno(int tailleGeno);
 TypeGeno* initialiser_liste_haplo(int tailleGeno);
 void ajout_tete(TypeHaplo* liste, int id);
-void ajout_queue_geno(TypeHaplo* liste, int id);
+void ajout_queue_geno(TypeHaplo* liste, int id, int idHaplo);
 void ajout_queue_paire_haplo(TypeGeno* liste, int id1, int id2);
 void ajout_pos(TypeHaplo* liste, int id, int position);
-void sup_pos(TypeHaplo* liste, int position);
+/*void sup_pos(TypeHaplo* liste, int position);*/
 void sup_case_id(TypeHaplo* liste, int id);
 void sup_ids(TypeHaplo* liste, int id);
 void suppression_liste_geno(TypeHaplo** ptrListe);
