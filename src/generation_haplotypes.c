@@ -11,9 +11,9 @@
 #include <string.h>
 #include "../inc/generation_haplotypes.h"
 
-/* fonctions tests ============================================================================== */
+/* fonctions tests =========================================================================== */
 
-/* Affichage des haplotypes */
+/* Affichage des haplytpes */
 void affichage_haplotypes(TypeGeno geno)
 {
     int i;
@@ -41,7 +41,7 @@ void affichage_genotype(TypeGeno geno)
     printf("\n");
 }
 
-/* Affichage des haplotypes (int *) */
+/* Affichage des hapltypes (int *) */
 void affichage_haplotype(TypeHaplo haplo)
 {
     int j;
@@ -53,9 +53,9 @@ void affichage_haplotype(TypeHaplo haplo)
         printf("\n");
 }
 
-/* fonctions privees ============================================================================ */
+/* fonctions privees ========================================================================= */
 
-/* Compte le nombre de loci ambigus pour un genotype donne */
+/* Compte le nombre de loci ambigu pour un genotype donnee */
 static int compte_nombre_loci_ambigu(TypeGeno geno)
 {
     int i;
@@ -138,7 +138,7 @@ int verif_doublon(int* seq1, int* seq2)
     return verifPresenceDoublon;
 }
 
-/* fonctions publiques ========================================================================== */
+/* fonctions publiques ======================================================================= */
 
 int* alloue_memoire()
 {
@@ -219,13 +219,13 @@ int initialisation_geno(TypeGeno* geno, int id)
     /* Generation de tous les haplotypes differents possibles */
     for(i = 0 ; i < TAILLE_GENO ; i++ )
     {
-        /* Permet de savoir a quelle position ambigue on se trouve */
+        /* Permet de savoir a quelle position ambigu on se trouve */
         if(geno->genotype[i] == 1){
             countLoci ++;
         }
         generation_haplo_possibles(geno->matriceHaplo,geno->nbHaplo,countLoci,i,geno->genotype[i]);
     }
-    #if 1
+    #if 0
     printf("*********************\n");
     affichage_genotype(*geno);
     printf("---------------------\n");
@@ -253,7 +253,7 @@ void recherche_genotype_doublon(TypeGeno* geno1, TypeGeno* geno2)
     }
 }
 
-/* Modification du nombre de genotypes identiques au gentoype etudie */
+/* Modification du nombre de genotype identique au gentoype etudie */
 void modification_nb_geno_identique(int id,TypeGeno* geno)
 {
     int i;
@@ -324,7 +324,7 @@ int calcul_nb_geno_non_redondant(TypeGeno* geno)
     return count;
 }
 
-/* Fonction de recherche d'haplotypes complementaires par indice */
+/* Fonction de recherche d'haplotype complementaire par indice */
 int recherche_haplo_complementaire(TypeGeno geno, int indice)
 {
     int indiceComplementaire;
@@ -340,7 +340,7 @@ int recherche_haplo_complementaire(TypeGeno geno, int indice)
     return indiceComplementaire;
 }
 
-/* Allocation memoire pour le tableau de frequences d'haplotypes */
+/* Allocation mémoire pour le tableau de frequence d'haplotype */
 double** allouer_memoire_tableau_2d(int nb)
 {
     int i;

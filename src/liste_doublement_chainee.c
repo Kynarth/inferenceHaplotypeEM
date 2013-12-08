@@ -51,7 +51,7 @@ TypeGeno* initialiser_liste_haplo(int tailleGeno)
     liste->id = 0;
     liste->taille = 0;
     liste->nbHaplo = 0;
-    liste->nbIdentique = 0;
+    liste->nbIdentique = 1;
     liste->probaPrec = 0;
     liste->proba = 0;
     liste->genotype = (int*)malloc(sizeof(int) * tailleGeno);

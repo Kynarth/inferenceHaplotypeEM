@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     int id = 0;
     int idGenoMax = 0;
     int nbLoci = 0;
-    int nbEtapeMax = 10000;
+    int nbEtapeMax = 1000;
     int nbHaploNonRedondant = 0;
     int nbGenoNonRedondant = 0;
     int lireTaille = 0;         /* taille memoire pour la lecture de ligne */
@@ -231,15 +231,9 @@ int main(int argc, char* argv[])
                 }
                 idGenoMax = geno[i].id;
             }
-            else
-            {
-                /* Modification du nombre de genotypes identiques dans le tableau de genotype au 
-                 * niveau des structures (ajout d'un +1 a geno[i].nbIdentique) */
-               
-            }
         }        
     }
-    #if 1 /* Affiche le contenu de toutes les listes chainees du tableau d'haplotypes NR */
+    #if 0 /* Affiche le contenu de toutes les listes chainees du tableau d'haplotypes NR */
     printf("-----test-----\n");
     for (i=0; i < nbHaploNonRedondant; i++)
     {
@@ -253,10 +247,10 @@ int main(int argc, char* argv[])
     for (i=0 ; i<nbHaploNonRedondant ; i++)
     {
         tabFreqHaplo[i][0] = tabHaploNR[i]->id;
-        tabFreqHaplo[i][1] = 1.00/nbHaploNonRedondant;
-        tabFreqHaplo[i][2] = 1.00/nbHaploNonRedondant;
+        tabFreqHaplo[i][1] = 1.00/nbHaploNonRedondant*100;
+        tabFreqHaplo[i][2] = 1.00/nbHaploNonRedondant*100;
     }
-    #if 1
+    #if 0
     for(i=0 ; i<nbHaploNonRedondant ; i++)
     {
         printf("%f %f %f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1],tabFreqHaplo[i][2]);
@@ -339,7 +333,7 @@ int main(int argc, char* argv[])
     printf("-----test-----\n");
     for (i=0; i < nbGenoNonRedondant; i++)
     {
-        printf("G%d: ", tabGenoNR[i]->id);
+        printf("G%d (nb = %d): ", tabGenoNR[i]->id, tabGenoNR[i]->nbIdentique);
         affichage_liste_paire_haplo(tabGenoNR[i]);
     }
     #endif
