@@ -225,7 +225,7 @@ int initialisation_geno(TypeGeno* geno, int id)
         }
         generation_haplo_possibles(geno->matriceHaplo,geno->nbHaplo,countLoci,i,geno->genotype[i]);
     }
-    #if 0
+    #if 1
     printf("*********************\n");
     affichage_genotype(*geno);
     printf("---------------------\n");

@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
     int nbHaploNonRedondant = 0;
     int nbGenoNonRedondant = 0;
     int lireTaille = 0;         /* taille memoire pour la lecture de ligne */
+    /*int* idsPaireHaplo = NULL;   tableau contenant les ids de la paire d'haplos la plus vrai semblable */
     char* nomFichier;           /* fichier contenant les genotypes */
     char* chaine = NULL;        /* chaine qui contiendra les lignes du fichier geno */
     char* sousChaine = NULL;    /* pointeur sur la partie code du genome */
@@ -34,7 +35,9 @@ int main(int argc, char* argv[])
     double seuil = 0.000000000000000000000000001;
     FILE* fichier = NULL;       
     FILE* fichierParam = NULL;
-    TypeGeno* geno = NULL;   
+    FILE* resultats_freq = NULL;
+    FILE* resultats_haplo = NULL;
+    TypeGeno* geno = NULL;
     TypeHaplo** tabHaploNR = NULL; /* tableau d'haplotypes non redondant */
     TypeGeno** tabGenoNR = NULL;   /* tableau de genotypes non redondant */
     
@@ -136,7 +139,17 @@ int main(int argc, char* argv[])
         /*** TEST 1 ***/
     }
 
-    #if 1
+    #if 0
+    for (i=0 ; i < NB_INDIV ; i++)
+    {
+        printf("*********************\n");
+        affichage_genotype(geno[i]);
+        printf("---------------------\n");
+        affichage_haplotypes(geno[i]);
+    }
+    #endif
+
+    #if 0
     for (i=0 ; i < NB_INDIV ; i++)
     {
         printf("G%d (d=%d) + nbIdentique = %d : ",geno[i].id,geno[i].doublon,geno[i].nbIdentique);
@@ -163,16 +176,6 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Un problème d'allocation mémoire est survenu.\n");
         exit(1);
     }
-
-    #if 0
-    /* Allocation du tableau de genotypes non redondant */
-    tabHaploNR = (TypeGeno**)malloc(sizeof(TypeGeno*) * nbHaploNonRedondant);
-    if (tabGenoNR == NULL)
-    {
-        fprintf(stderr, "Un problème d'allocation mémoire est survenu.\n");
-        exit(1);
-    }
-    #endif
 
 	/* Initialisation de chaque liste du tableau d'haplotypes */
     for (i = 0; i < nbHaploNonRedondant; i++)
@@ -310,17 +313,15 @@ int main(int argc, char* argv[])
             /* Si le genotype ne possede pas de loci ambigus (homozygotie) */
             if (geno[i].nbHaplo == 1)
             {
-                ajout_queue_paire_haplo(tabGenoNR[c], 
-                    geno[i].matriceHaplo[0].id, 
-                    geno[i].matriceHaplo[0].id);
+                ajout_queue_paire_haplo(tabGenoNR[c], geno[i].matriceHaplo[0].id, 
+                                        geno[i].matriceHaplo[0].id);
             }
             else /* Heterozygotie */
 
             {
                 for (j=0; j < (geno[i].nbHaplo / 2); j++)
                 {
-                    ajout_queue_paire_haplo(tabGenoNR[c], 
-                        geno[i].matriceHaplo[j].id, 
+                    ajout_queue_paire_haplo(tabGenoNR[c], geno[i].matriceHaplo[j].id, 
                         geno[i].matriceHaplo[recherche_haplo_complementaire(geno[i], j)].id);
                 }
             }
@@ -329,7 +330,7 @@ int main(int argc, char* argv[])
         }
     }
     
-    #if 1 /* Affiche le contenu de toutes les listes chainees du tableau de genotypes NR */
+    #if 0 /* Affiche le contenu de toutes les listes chainees du tableau de genotypes NR */
     printf("-----test-----\n");
     for (i=0; i < nbGenoNonRedondant; i++)
     {
@@ -338,7 +339,7 @@ int main(int argc, char* argv[])
     }
     #endif
 
-    /* Inference d'haplotypes EM ================================================================ */
+    /* Inference d'haplotypes EM */
     #if 1
     inference_haplotype_em(seuil, nbGenoNonRedondant, nbHaploNonRedondant, nbEtapeMax,
                            tabFreqHaplo, tabGenoNR, tabHaploNR);
@@ -346,12 +347,75 @@ int main(int argc, char* argv[])
 
     /* Tri du tableau de frequence d'haplotype */ 
     qsort (tabFreqHaplo, nbHaploNonRedondant , sizeof*tabFreqHaplo, compare);
-    #if 1
-    for(i=0 ; i<10 ; i++)
+    
+    #if 0
+    for(i=0 ; i<nbHaploNonRedondant ; i++)
     {
-        printf("%.0f %.2f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1]);
+        printf("%f %f %f\n",tabFreqHaplo[i][0],tabFreqHaplo[i][1],tabFreqHaplo[i][2]);
     }
     #endif
+
+    /* Creation du fichier des haplotypes avec leur fréquences triés par ordre decroissant */
+    resultats_freq = fopen(RESULTATS_FREQ, "w");
+    if ( fichier != NULL)
+    {
+        for (i=0; i < nbHaploNonRedondant ;i++)
+        {
+            for (j=0; j < nbHaploNonRedondant; j++)
+            {
+                if ((tabHaploNR[j]->id == tabFreqHaplo[i][0]) && (tabFreqHaplo[i][1] > 0.01))
+                {
+                    for (c=0; c < TAILLE_GENO; c++)
+                    {
+                        fprintf(resultats_freq, "%d", tabHaploNR[i]->haplotype[c]);
+                    }
+                    fprintf(resultats_freq, "\t%.2f\n",tabFreqHaplo[i][1]);
+                }
+            }
+        }
+    }
+    else
+    {
+        fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s\n",
+                RESULTATS_FREQ);
+        exit(1);
+    }
+    fclose(resultats_freq);
+    
+    /* Creation du fichier de genotypes par individu avec leur paires d'haplotypes la plus 
+     * vraisemblable */ 
+    resultats_haplo = fopen(RESULTATS_HAPLO, "w");
+    if ( fichier != NULL)
+    {
+        for (i=0; i < NB_INDIV; i++)
+        {
+             /* Ecriture de la ligne geno */
+            fprintf(resultats_haplo, "/ind %d geno   ", i);
+            for (j=0; j < TAILLE_GENO; j++)
+            {
+                fprintf(resultats_haplo, "%d", geno[i].genotype[j]);
+            }
+            fprintf(resultats_haplo, "\n");
+            id = 0;
+            /* Regarde à quel indice dans le tableau de genotypes non redondant se trouve
+             * le genotype de l'individu */
+            for (c=0; c < nbGenoNonRedondant; c++)
+            {
+                    if (tabGenoNR[c]->id == geno[i].id)
+                        id = c;
+            }
+            /* Ecriture de la paire d'haplo explicative */
+            ecriture_paire_haplotype(tabGenoNR, tabFreqHaplo, nbHaploNonRedondant, 
+                                     tabHaploNR, resultats_haplo, id, i);
+        }
+    }
+    else
+    {
+        fprintf(stderr, "Une erreur s'est produite dans la création du fichier %s\n", 
+                RESULTATS_HAPLO);
+        exit(1);
+    }
+    fclose(resultats_haplo);
 
     /* Liberation de la memoire alloue au tableau de frequences des haplotypes */
     for (i=0; i < nbHaploNonRedondant; i++)

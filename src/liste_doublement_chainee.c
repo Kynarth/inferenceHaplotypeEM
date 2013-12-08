@@ -374,8 +374,8 @@ void suppression_liste_paire_haplo(TypeGeno** ptrListe)
     }
 }
 
-/* Fonction de recherche en fonction de l'id */
-TypeGenoExplique* recherche_id(TypeHaplo* liste, int id)
+/* Fonction de recherche en fonction de l'id dans une liste chainee de genotype */
+TypeGenoExplique* recherche_id_geno(TypeHaplo* liste, int id)
 {
     TypeGenoExplique* ptr = liste->first; /* Pointeur de parcours de liste */
     
@@ -398,10 +398,34 @@ TypeGenoExplique* recherche_id(TypeHaplo* liste, int id)
     return ptr;
 }
 
+/* Fonction de recherche en fonction de l'id dans une liste chainee de paire d'haplotypes */
+TypePaireHaplo* recherche_id_paire_haplo(TypeGeno* liste, int id)
+{
+    TypePaireHaplo* ptr = liste->first; /* Pointeur de parcours de liste */
+    
+    if (liste != NULL)
+    {
+        while (ptr != NULL)
+        {
+            if (ptr->idHaplo1 == id)
+            {
+                return ptr;
+            }
+            else
+            {
+                ptr=ptr->next;
+            }
+        }
+        
+    }
+    
+    return ptr;
+}
+
 /* Fonction modifiant les informations d'un element de la liste */
 void modif_liste(TypeHaplo* liste, int id, int new_id)
 {
-    TypeGenoExplique* ptr = recherche_id(liste, id);
+    TypeGenoExplique* ptr = recherche_id_geno(liste, id);
     if (ptr == NULL)
     {
         fprintf(stderr, "La modification de liste n'a pu se faire.\n");
@@ -464,6 +488,38 @@ int taille_liste(TypeHaplo* liste)
     }
     
     return taille;
+}
+
+/* Fonction donnant l'idHaplo1 d'une paire d'haplotypes à telle position */
+int* id_pos(TypeGeno* liste, int position)
+{
+    int i = 1; /* Compteur */
+    int tabIds[2];
+    int* ids = tabIds;
+    
+    TypePaireHaplo* ptr = liste->first; /* Pointeur de parcours de liste */
+    
+    if (liste != NULL)
+    {
+        while ((ptr != NULL) && (i <= position))
+        {
+            if (position == i)
+            {
+                /*return ptr->idHaplo1;*/
+                tabIds[0] = ptr->idHaplo1;
+                tabIds[1] = ptr->idHaplo2;
+                return ids;
+            }
+            else
+            {
+                ptr = ptr->next;
+            }
+            i++;
+        }
+    }
+    ids[0] = -1;
+    ids[1] = -1;
+    return ids;
 }
 
 

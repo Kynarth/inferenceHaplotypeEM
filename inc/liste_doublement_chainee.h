@@ -87,11 +87,13 @@ void sup_case_id(TypeHaplo* liste, int id);
 void sup_ids(TypeHaplo* liste, int id);
 void suppression_liste_geno(TypeHaplo** ptrListe);
 void suppression_liste_paire_haplo(TypeGeno** ptrListe);
-TypeGenoExplique* recherche_id(TypeHaplo* liste, int id);
+TypeGenoExplique* recherche_id_geno(TypeHaplo* liste, int id);
+TypePaireHaplo* recherche_id_paire_haplo(TypeGeno* liste, int id);
 void modif_liste(TypeHaplo* liste, int id, int new_id);
 void affichage_liste_geno(TypeHaplo* liste);
 void affichage_liste_paire_haplo(TypeGeno* liste);
 int taille_Liste(TypeHaplo* liste);
+int* id_pos(TypeGeno* liste, int position);
 
 
 #endif /* H_LISTE_DOUBLEMENT_CHAINEE */

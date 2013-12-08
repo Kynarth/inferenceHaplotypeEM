@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../inc/inference_haplotype_EM.h"
-
+#include "../inc/liste_doublement_chainee.h"
 
 /* fonctions privees ============================================================================ */
 
@@ -216,11 +216,8 @@ static void mise_a_jour_freq(int nbHaplo, double** tabFreq)
 
 /* fonctions publiques ========================================================================== */
 
-void inference_haplotype_em(double seuil,
-    int nbGeno, int nbHaplo, int nbEtapeMax,
-    double** tabFreq,
-    TypeGeno** tabGeno,
-    TypeHaplo** tabHaplo)
+void inference_haplotype_em(double seuil, int nbGeno, int nbHaplo, int nbEtapeMax,
+                            double** tabFreq, TypeGeno** tabGeno, TypeHaplo** tabHaplo)
 {
     /* Variables locales */
     bool_t convergence = FALSE;
@@ -237,7 +234,7 @@ void inference_haplotype_em(double seuil,
     while((convergence == FALSE) && (nbEtape < nbEtapeMax))
     {
         nbEtape++;
-        #if 1
+        #if 0
         printf("*********** ITERATION %d *****************\n",nbEtape);
         #endif
         maximisation(nbHaplo, tabHaplo, tabGeno, tabFreq);
@@ -252,7 +249,7 @@ void inference_haplotype_em(double seuil,
         #if 1
         convergence = (fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec) <= seuil;
         #endif
-        #if 1
+        #if 0
         printf("etape : %d => V : %f - VPrec: %f - ",nbEtape,vraissemblance,vraissemblancePrec);
         printf("calcul convergence : %.30f\n",fabs(vraissemblance-vraissemblancePrec)/vraissemblancePrec);
         #endif
@@ -268,4 +265,76 @@ void inference_haplotype_em(double seuil,
         }
     }
     /*FIN*/
+}
+
+/* Recherche la paire d'haplotype la plus vraisemblable */
+int* recherche_meilleure_paire_haplo(TypeGeno* liste, double** tabFreqHaplo, int taille)
+{
+    float freq = 0.00;   /* Plus grande frequence d'haplotype trouvee pour le genotype */
+    int i, j = 0;        /* Compteurs */
+    int idsHaplo[2];     /* Ids de la paire d'haplotypes ayant la meilleure frequence */
+    int* tabIds = NULL;  /* Recoit les ids de la paire d'haplotypes à comparer */
+    int* ids = idsHaplo; /* Contient les deux ids de la paire d'haplotypes à retourner */
+    
+    /* Parcours de chaque paire d'haplo */                      
+    for (i=1; i <= liste->nbHaplo; i++)
+    {
+        tabIds = id_pos(liste, i);
+        if (tabIds[0] == -1) /* Il n'y plus de paire d'haplotypes dans la liste chainee */
+            break;
+            
+        /* Parcours du tableau des frequences pour comparer les valeurs de frequences */
+        for (j=0; j < taille; j++)
+        {   
+            if ((tabIds[0] == (int)tabFreqHaplo[j][0]) && (freq < tabFreqHaplo[j][1]))
+            {
+                idsHaplo[0] = tabIds[0];
+                idsHaplo[1] = tabIds[1];
+                freq = tabFreqHaplo[j][1];
+            }
+        }
+    }
+
+    return ids; /* Retour de les ids de la paire d'haplotypes ayant la plus grande frequence */
+}
+
+/* Fonction permettant l'ecriture de la paire la plus vraisemblable pour un genotype donne */
+void ecriture_paire_haplotype(TypeGeno** tabGenoNR, double** tabFreqHaplo, int nbHaploNonRedondant, 
+                              TypeHaplo** tabHaploNR, FILE* resultats_haplo, int i, int k)
+{
+    /* Variables locales */
+    int j, c = 0;
+    int* idsPaireHaplo = NULL;  /* tableau contenant les ids de la paire d'haplos 
+                                 * la plus vraisemblable */
+    
+    /* Ecriture du premier haplo de la paire */
+    fprintf(resultats_haplo, "/ind %d haplo1 ", k);
+    idsPaireHaplo = recherche_meilleure_paire_haplo(tabGenoNR[i], tabFreqHaplo, nbHaploNonRedondant);
+    /* Recherche du 1er haplotype de la paire dans le tableau d'haplotypes non redondant */
+    for (c=0; c < nbHaploNonRedondant; c++)
+    {
+        if (idsPaireHaplo[0] == tabHaploNR[c]->id)
+        {
+            for (j=0; j < TAILLE_GENO; j++)
+            {
+                fprintf(resultats_haplo, "%d", tabHaploNR[c]->haplotype[j]);
+            }
+            fprintf(resultats_haplo, "\n");
+        }
+    }
+    
+    /* Ecriture du deuxieme haplo de la paire */
+    fprintf(resultats_haplo, "/ind %d haplo2 ", k);
+    /* Recherche du 2eme haplotype de la paire dans le tableau d'haplotypes non redondant */
+    for (c=0; c < nbHaploNonRedondant; c++)
+    {
+        if (idsPaireHaplo[1] == tabHaploNR[c]->id)
+        {
+            for (j=0; j < TAILLE_GENO; j++)
+            {
+                fprintf(resultats_haplo, "%d", tabHaploNR[c]->haplotype[j]);
+            }
+            fprintf(resultats_haplo, "\n");
+        }
+    } 
 }

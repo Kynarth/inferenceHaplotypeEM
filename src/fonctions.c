@@ -39,7 +39,7 @@ static void ecrire_genotypes(TypeGeno geno, FILE* fic)
 	{
 		fprintf(fic,"%d",geno.genotype[colonne]);
 	}
-	fprintf(fic,"<CR>\n");
+	fprintf(fic,"\n");
 }
 
 /* Fonction d'ecriture d'haplotype dans un fichier */
@@ -50,7 +50,7 @@ static void ecrire_haplotypes(TypeHaplo haplo, FILE* fic)
 	{
 		fprintf(fic,"%d",haplo.haplotype[colonne]);
 	}
-	fprintf(fic,"<CR>\n");
+	fprintf(fic,"\n");
 	/*(test)printf("\tdoublon=%d\n",haplo.doublon);*/
 }
 
@@ -188,7 +188,7 @@ void afficher_haplotypes(TypeHaplo haplo){
 	{
 		printf("%d",haplo.haplotype[colonne]);
 	}
-	printf("<CR>\n");
+	printf("\n");
 	/*(test)printf("\tdoublon=%d\n",haplo.doublon);*/
 }
 
@@ -200,7 +200,7 @@ void afficher_genotypes(TypeGeno geno){
 	{
 		printf("%d",geno.genotype[colonne]);
 	}
-	printf("<CR>\n");
+	printf("\n");
 }
 
 /*
