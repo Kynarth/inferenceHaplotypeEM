@@ -14,7 +14,7 @@ EXEC = $(EXE)main $(EXE)inference_main
 
 all: $(EXEC)
 
-$(EXE)inference_main: $(SRC)inference_main.c $(SRC)generation_haplotypes.c $(SRC)liste_doublement_chainee.c
+$(EXE)inference_main: $(SRC)inference_main.c $(SRC)generation_haplotypes.c $(SRC)liste_doublement_chainee.c $(SRC)inference_haplotype_EM.c
 	@$(CC) $^ -lm -o $@ $(FLAGS)
 
 $(EXE)main: $(SRC)fonctions.c $(SRC)main.c
